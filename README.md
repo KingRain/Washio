@@ -1,16 +1,25 @@
-# machinex
+# Wash.io 👕
 
-A new Flutter project.
+---
 
-## Getting Started
+Wash.io is a convenient app that allows users to book a time slot for using the washing machine on their floor. The app also sends notification alerts to remind users of their booking and keep them updated on the machine's availability.
 
-This project is a starting point for a Flutter application.
+## Features ✨
 
-A few resources to get you started if this is your first Flutter project:
+- **Time Slot Booking**: Users can easily book a time slot for using the washing machine on their floor.
+- **Notification Alerts**: The app sends notifications to remind users of their upcoming bookings and notify them of any changes.
+- **Real-Time Availability**: Check the real-time availability of the washing machine to find the most convenient time slot.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Installation 💾
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+To run the Wash.io app locally, follow these steps:
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/KingRain/Washio.git
+   cd washio
+   ```
+
+2. Install Flutter
+3. Run the command `Flutter run`
