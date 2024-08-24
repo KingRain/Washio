@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:machinex/pages/groundFloor.dart';
+import 'package:machinex/pages/secondFloor.dart';
+import 'firstFloor.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -50,7 +53,11 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                //test
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const FloorZeroPage()),
+                );
               },
               style: ElevatedButton.styleFrom(
                 fixedSize: const Size(200, 50),
@@ -65,7 +72,10 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                //test
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const FloorOnePage()),
+                );
               },
               style: ElevatedButton.styleFrom(
                 fixedSize: const Size(200, 50),
@@ -80,7 +90,10 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                //test
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const FloorTwoPage()),
+                );
               },
               style: ElevatedButton.styleFrom(
                 fixedSize: const Size(200, 50),

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "299011525070",
+    "project_id": "washio-d9797",
+    "storage_bucket": "washio-d9797.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:299011525070:android:023c99d16d24a86929039f",
+        "android_client_info": {
+          "package_name": "com.android.washio"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGlR0w5cck1Zs6fnEnh4cTN7FsorKpmp0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
