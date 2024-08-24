@@ -4,7 +4,6 @@ import 'package:machinex/pages/groundfloor.dart';
 import 'package:machinex/pages/secondfloor.dart';
 import 'firstfloor.dart';
 
-//Sam is so cool
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
