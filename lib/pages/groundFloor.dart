@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'dart:convert';
 
 class FloorZeroPage extends StatelessWidget {
@@ -23,6 +24,14 @@ class FloorZeroPage extends StatelessWidget {
     } else {
       throw Exception('Failed to load Google Sheets data');
     }
+  }
+
+  //Getting the date
+  String getCurrentDate() {
+    final DateTime now = DateTime.now();
+    // Format the date (e.g., "August 24, 2024")
+    final DateFormat formatter = DateFormat('MMMM d, yyyy');
+    return formatter.format(now);
   }
 
   @override
@@ -55,13 +64,16 @@ class FloorZeroPage extends StatelessWidget {
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
+                            fontFamily: 'JetBrains Mono',
                           )));
                 }).toList(),
                 rows: data.skip(1).map<DataRow>((row) {
                   return DataRow(
                       cells: row.map<DataCell>((cell) {
                     return DataCell(Text(cell,
-                        style: const TextStyle(color: Colors.white)));
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'JetBrains Mono')));
                   }).toList());
                 }).toList(),
               ),

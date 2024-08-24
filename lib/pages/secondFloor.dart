@@ -54,6 +54,7 @@ class FloorTwoPage extends StatelessWidget {
                       label: Text(value,
                           style: const TextStyle(
                             color: Colors.white,
+                            fontFamily: 'JetBrains Mono',
                             fontWeight: FontWeight.bold,
                           )));
                 }).toList(),
@@ -61,7 +62,9 @@ class FloorTwoPage extends StatelessWidget {
                   return DataRow(
                       cells: row.map<DataCell>((cell) {
                     return DataCell(Text(cell,
-                        style: const TextStyle(color: Colors.white)));
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'JetBrains Mono')));
                   }).toList());
                 }).toList(),
               ),

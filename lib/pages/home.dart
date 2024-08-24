@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:machinex/pages/groundFloor.dart';
-import 'package:machinex/pages/secondFloor.dart';
-import 'firstFloor.dart';
+import 'package:machinex/pages/groundfloor.dart';
+import 'package:machinex/pages/secondfloor.dart';
+import 'firstfloor.dart';
 
 //Sam is so cool
 class HomePage extends StatelessWidget {
