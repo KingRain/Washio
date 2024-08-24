@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
           children: <Widget>[
             const SizedBox(height: 10),
             Image.asset(
-              '../assets/images/laundry.png',
+              '../assets/images/main-icon.png',
               width: 200,
               height: 200,
             ),
