@@ -1,7 +1,8 @@
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
-import 'package:machinex/pages/firstfloor.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:machinex/pages/home.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class BookingPage extends StatefulWidget {
   const BookingPage({super.key});
@@ -15,37 +16,42 @@ class _BookingPageState extends State<BookingPage> {
 
   String name = '';
   String roomNo = '';
-  String slot = '';
-
-  final String spreadsheetId = '1puVRlVbGyoUIv6qGVn7Bm2bDIzGpPNYYsEJKdMfkhB4';
-  final String sheetName = 'Floor1';
-  final String apiKey = 'AIzaSyBmsowEETwL5TGyGdtHbXuw-IiqR1cI98E';
+  TimeOfDay? startTime;
+  TimeOfDay? stopTime;
 
   Future<void> submitData() async {
-    final url =
-        'https://sheets.googleapis.com/v4/spreadsheets/$spreadsheetId/values/$sheetName!A:D:append?valueInputOption=USER_ENTERED&key=$apiKey';
+    if (startTime == null || stopTime == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Please select both start and stop times')),
+      );
+      return;
+    }
 
-    final Map<String, dynamic> body = {
-      "values": [
-        [name, roomNo, slot]
-      ]
-    };
+    final slot = '${startTime!.format(context)}\n${stopTime!.format(context)}';
 
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(body),
-    );
+    final response = await Supabase.instance.client
+        .from('floor1')
+        .insert({'Name': name, 'RoomNo': roomNo, 'Slot': slot});
 
-    if (response.statusCode == 200) {
+    if (response.error == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Slot booked successfully!')),
       );
+      Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to book slot: ${response.body}')),
+        SnackBar(
+            content: Text('Failed to book slot: ${response.error!.message}')),
       );
     }
+  }
+
+  Future<TimeOfDay?> _selectTime(BuildContext context) async {
+    return await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
   }
 
   @override
@@ -62,12 +68,19 @@ class _BookingPageState extends State<BookingPage> {
           ),
         ),
         backgroundColor: const Color.fromARGB(255, 64, 64, 64),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextFormField(
                 decoration: const InputDecoration(
@@ -111,10 +124,14 @@ class _BookingPageState extends State<BookingPage> {
                     borderSide: BorderSide(color: Colors.blue),
                   ),
                 ),
+                keyboardType: TextInputType.number,
                 style: const TextStyle(color: Colors.white),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your room number';
+                  }
+                  if (int.tryParse(value) == null) {
+                    return 'Please enter a valid room number';
                   }
                   return null;
                 },
@@ -125,32 +142,52 @@ class _BookingPageState extends State<BookingPage> {
                 },
               ),
               const SizedBox(height: 16.0),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Slot',
-                  labelStyle: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'JetBrains Mono',
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.access_time, color: Colors.white),
+                    onPressed: () async {
+                      final selectedTime = await _selectTime(context);
+                      if (selectedTime != null) {
+                        setState(() {
+                          startTime = selectedTime;
+                        });
+                      }
+                    },
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
+                  Expanded(
+                    child: Text(
+                      startTime != null
+                          ? 'Start Time: ${startTime!.format(context)}'
+                          : 'Select Start Time',
+                      style: const TextStyle(color: Colors.white),
+                    ),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blue),
+                ],
+              ),
+              const SizedBox(height: 16.0),
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.access_time, color: Colors.white),
+                    onPressed: () async {
+                      final selectedTime = await _selectTime(context);
+                      if (selectedTime != null) {
+                        setState(() {
+                          stopTime = selectedTime;
+                        });
+                      }
+                    },
                   ),
-                ),
-                style: const TextStyle(color: Colors.white),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the desired slot';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  setState(() {
-                    slot = value;
-                  });
-                },
+                  Expanded(
+                    child: Text(
+                      stopTime != null
+                          ? 'Stop Time: ${stopTime!.format(context)}'
+                          : 'Select Stop Time',
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 24.0),
               ElevatedButton(
@@ -159,8 +196,7 @@ class _BookingPageState extends State<BookingPage> {
                     submitData();
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const FloorOnePage()),
+                      MaterialPageRoute(builder: (context) => const HomePage()),
                     );
                   }
                 },

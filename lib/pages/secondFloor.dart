@@ -1,78 +1,113 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:machinex/pages/booking.dart';
 
 class FloorTwoPage extends StatelessWidget {
   const FloorTwoPage({super.key});
 
-  final String spreadsheetId = '1puVRlVbGyoUIv6qGVn7Bm2bDIzGpPNYYsEJKdMfkhB4';
-  final String sheetName = 'Floor2';
-  final String range = 'A1:D80';
-  final String apiKey = 'AIzaSyBmsowEETwL5TGyGdtHbXuw-IiqR1cI98E';
+  Future<List<Map<String, dynamic>>> fetchSupabaseData() async {
+    final response = await Supabase.instance.client.from('floor2').select();
 
-  Future<List<List<String>>> fetchSheetData() async {
-    final url =
-        'https://sheets.googleapis.com/v4/spreadsheets/$spreadsheetId/values/$sheetName!$range?key=$apiKey';
-
-    final response = await http.get(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.body);
-      final values = json['values'] as List<dynamic>;
-      return values.map((row) => List<String>.from(row)).toList();
-    } else {
-      throw Exception('Failed to load Google Sheets data');
+    if (response.isEmpty) {
+      throw Exception('No data found in Supabase');
     }
+    return response;
+  }
+
+  String getCurrentDate() {
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat('MMMM d, yyyy');
+    return formatter.format(now);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Floor 2',
-            style: TextStyle(
-              color: Color.fromARGB(255, 255, 255, 255),
-              fontSize: 20,
-              fontFamily: 'JetBrains Mono',
-              fontWeight: FontWeight.bold,
-            )),
+        title: const Text(
+          'Floor 1',
+          style: TextStyle(
+            color: Color.fromARGB(255, 255, 255, 255),
+            fontSize: 20,
+            fontFamily: 'JetBrains Mono',
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         backgroundColor: const Color.fromARGB(255, 64, 64, 64),
       ),
-      body: FutureBuilder(
-        future: fetchSheetData(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else {
-            var data = snapshot.data as List<List<String>>;
-            return SingleChildScrollView(
-              child: DataTable(
-                columns: data[0].map<DataColumn>((value) {
-                  return DataColumn(
-                      label: Text(value,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'JetBrains Mono',
-                            fontWeight: FontWeight.bold,
-                          )));
-                }).toList(),
-                rows: data.skip(1).map<DataRow>((row) {
-                  return DataRow(
-                      cells: row.map<DataCell>((cell) {
-                    return DataCell(Text(cell,
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'JetBrains Mono')));
-                  }).toList());
-                }).toList(),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(height: 20),
+            Text(
+              '${getCurrentDate()} Slots',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'JetBrains Mono',
               ),
-            );
-          }
-        },
+            ),
+            const SizedBox(height: 20), // Space between the text and table
+            Expanded(
+              child: FutureBuilder(
+                future: fetchSupabaseData(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else {
+                    var data = snapshot.data as List<Map<String, dynamic>>;
+                    if (data.isEmpty) {
+                      return const Center(child: Text('No data found'));
+                    }
+                    var columns = data.first.keys.toList();
+                    return SingleChildScrollView(
+                      child: DataTable(
+                        columns: columns.map<DataColumn>((value) {
+                          return DataColumn(
+                              label: Text(value,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'JetBrains Mono',
+                                  )));
+                        }).toList(),
+                        rows: data.map<DataRow>((row) {
+                          return DataRow(
+                              cells: columns.map<DataCell>((column) {
+                            return DataCell(Text(row[column].toString(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'JetBrains Mono',
+                                )));
+                          }).toList());
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
       ),
       backgroundColor: const Color.fromARGB(255, 29, 29, 29),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const BookingPage()),
+          );
+        },
+        backgroundColor: Colors.deepPurple,
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
     );
   }
 }

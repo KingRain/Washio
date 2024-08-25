@@ -1,32 +1,24 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:machinex/pages/booking.dart';
+import 'package:machinex/pages/home.dart';
 
 class FloorOnePage extends StatelessWidget {
   const FloorOnePage({super.key});
 
-  final String spreadsheetId = '1puVRlVbGyoUIv6qGVn7Bm2bDIzGpPNYYsEJKdMfkhB4';
-  final String sheetName = 'Floor1';
-  final String range = 'A1:D80';
-  final String apiKey = 'AIzaSyBmsowEETwL5TGyGdtHbXuw-IiqR1cI98E';
+  Future<List<Map<String, dynamic>>> fetchSupabaseData() async {
+    final response = await Supabase.instance.client
+        .from('floor1')
+        .select('Name, Slot, Status')
+        .order('Slot', ascending: true);
 
-  Future<List<List<String>>> fetchSheetData() async {
-    final url =
-        'https://sheets.googleapis.com/v4/spreadsheets/$spreadsheetId/values/$sheetName!$range?key=$apiKey';
-
-    final response = await http.get(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.body);
-      final values = json['values'] as List<dynamic>;
-      return values.map((row) => List<String>.from(row)).toList();
-    } else {
-      throw Exception('Failed to load Google Sheets data');
+    if (response.isEmpty) {
+      throw Exception('No data found in Supabase');
     }
+    return response;
   }
 
   String getCurrentDate() {
@@ -39,6 +31,16 @@ class FloorOnePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+              (route) => false,
+            );
+          },
+        ),
         title: const Text(
           'Floor 1',
           style: TextStyle(
@@ -59,7 +61,7 @@ class FloorOnePage extends StatelessWidget {
               '${getCurrentDate()} Slots',
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 18,
+                fontSize: 22,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'JetBrains Mono',
               ),
@@ -67,29 +69,34 @@ class FloorOnePage extends StatelessWidget {
             const SizedBox(height: 20), // Space between the text and table
             Expanded(
               child: FutureBuilder(
-                future: fetchSheetData(),
+                future: fetchSupabaseData(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else {
-                    var data = snapshot.data as List<List<String>>;
+                    var data = snapshot.data as List<Map<String, dynamic>>;
+                    if (data.isEmpty) {
+                      return const Center(child: Text('No data found'));
+                    }
+                    var columns = data.first.keys.toList();
                     return SingleChildScrollView(
                       child: DataTable(
-                        columns: data[0].map<DataColumn>((value) {
+                        columns: columns.map<DataColumn>((value) {
                           return DataColumn(
                               label: Text(value,
                                   style: const TextStyle(
+                                    fontSize: 18,
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: 'JetBrains Mono',
                                   )));
                         }).toList(),
-                        rows: data.skip(1).map<DataRow>((row) {
+                        rows: data.map<DataRow>((row) {
                           return DataRow(
-                              cells: row.map<DataCell>((cell) {
-                            return DataCell(Text(cell,
+                              cells: columns.map<DataCell>((column) {
+                            return DataCell(Text(row[column].toString(),
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontFamily: 'JetBrains Mono',

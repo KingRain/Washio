@@ -30,32 +30,24 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  # Essential packages
   http: ^1.2.2
   intl: ^0.19.0
-  googleapis: 13.2.0
-  googleapis_auth: ^1.3.0
+  cloud_firestore: ^4.14.0
+  firebase_core: 2.24.2
+  supabase_flutter: ^2.6.0
 
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
+  # Icons and images packages
   cupertino_icons: ^1.0.8
   flutter_svg: ^2.0.10+1
+  
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^4.0.0
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
-# The following section is specific to Flutter packages.
 flutter:
   uses-material-design: true
 
