@@ -34,8 +34,6 @@ dependencies:
   # Essential packages
   http: ^1.2.2
   intl: ^0.19.0
-  cloud_firestore: ^4.14.0
-  firebase_core: 2.24.2
   supabase_flutter: ^2.6.0
 
   # Icons and images packages

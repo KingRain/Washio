@@ -28,7 +28,25 @@ class _BookingPageState extends State<BookingPage> {
       return;
     }
 
-    final slot = '${startTime!.format(context)}\n${stopTime!.format(context)}';
+    // Format the start and stop times as strings
+    final formattedStartTime = startTime!.format(context);
+    final formattedStopTime = stopTime!.format(context);
+
+    // Check if the slot already exists
+    final existingSlots = await Supabase.instance.client
+        .from('floor1')
+        .select('Slot')
+        .ilike('Slot', '%$formattedStartTime%')
+        .or('Slot.ilike.%$formattedStopTime%');
+
+    if (existingSlots.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('This slot is already taken!')),
+      );
+      return;
+    }
+
+    final slot = '$formattedStartTime\n$formattedStopTime';
 
     final response = await Supabase.instance.client
         .from('floor1')

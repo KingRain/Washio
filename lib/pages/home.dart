@@ -27,7 +27,7 @@ class HomePage extends StatelessWidget {
             color: const Color.fromARGB(0, 255, 255, 255),
           ),
           child: SvgPicture.asset(
-            '../assets/icons/home.svg',
+            '../assets/icons/HomeIcon.svg',
             width: 16,
             height: 16,
           ),
