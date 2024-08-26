@@ -13,15 +13,40 @@ class FloorOnePage extends StatefulWidget {
 
 class _FloorOnePageState extends State<FloorOnePage> {
   Future<List<Map<String, dynamic>>> fetchSupabaseData() async {
-    final response = await Supabase.instance.client
-        .from('floor1')
-        .select('Name, Slot, Status')
-        .order('Slot', ascending: true);
+    try {
+      final response = await Supabase.instance.client
+          .from('floor1')
+          .select('Name, Slot, Status');
 
-    if (response.isEmpty) {
-      throw Exception('No data found in Supabase');
+      if (response.isEmpty) {
+        throw Exception('No data found in Supabase');
+      }
+
+      List<Map<String, dynamic>> data =
+          List<Map<String, dynamic>>.from(response);
+
+      final DateFormat timeFormat = DateFormat('HH:mm');
+
+      data.sort((a, b) {
+        try {
+          DateTime startTimeA =
+              timeFormat.parse(a['Slot'].toString().split('\n').first);
+          DateTime startTimeB =
+              timeFormat.parse(b['Slot'].toString().split('\n').first);
+          return startTimeA.compareTo(startTimeB);
+        } catch (e) {
+          // Handle any parsing errors, default to no change in order
+          print('Error parsing slot times: $e');
+          return 0;
+        }
+      });
+
+      return data;
+    } catch (e) {
+      // Handle errors that occurred during the request or processing
+      print('Error fetching data: $e');
+      throw Exception('Failed to fetch data from Supabase');
     }
-    return response;
   }
 
   Future<void> updateStatusBasedOnTime() async {
@@ -34,23 +59,31 @@ class _FloorOnePageState extends State<FloorOnePage> {
       String currentStatus = row['Status'].toString();
 
       try {
-        List<String> slotTimes = slot.split('\n');
+        List<String> slotTimes = slot.split('\n').map((e) {
+          return e.split(' ').first;
+        }).toList(); //Returns data like ['09:00', '10:00']
 
         if (slotTimes.length == 2) {
-          DateTime startTime = timeFormat.parse(slotTimes[0]);
-          DateTime endTime = timeFormat.parse(slotTimes[1]);
+          DateTime startTime =
+              timeFormat.parse(slotTimes[0]); //Returns data like 09:00 PM
+          DateTime endTime =
+              timeFormat.parse(slotTimes[1]); //Returns data like 10:00 PM
 
           // Adjusting to current date
-          startTime = DateTime(
-              now.year, now.month, now.day, startTime.hour, startTime.minute);
-          endTime = DateTime(
-              now.year, now.month, now.day, endTime.hour, endTime.minute);
+          startTime = DateTime(now.year, now.month, now.day, startTime.hour,
+              startTime.minute); //Returns data like 2021-10-10 09:00:00.000
+          endTime = DateTime(now.year, now.month, now.day, endTime.hour,
+              endTime.minute); //Returns data like 2021-10-10 10:00:00.000
 
           String newStatus;
-          if (now.isAfter(endTime)) {
+
+          if (now.isAfter(endTime.add(const Duration(days: 1)))) {
             newStatus = 'Finished';
-          } else if (now.isAfter(startTime) && now.isBefore(endTime)) {
+          } else if (now.isAfter(startTime.add(const Duration(days: 1))) &&
+              now.isBefore(endTime.add(const Duration(days: 1)))) {
             newStatus = 'Active';
+          } else if (now.isBefore(startTime)) {
+            newStatus = 'Pending';
           } else {
             newStatus = currentStatus; // No change
           }
