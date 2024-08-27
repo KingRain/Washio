@@ -51,7 +51,8 @@ class _FloorOnePageState extends State<FloorOnePage> {
 
   Future<void> updateStatusBasedOnTime() async {
     final data = await fetchSupabaseData();
-    final DateTime now = DateTime.now();
+    final DateTime now = DateTime
+        .now(); //Returns current date and time like 2021-10-10 09:00:00.000
     final DateFormat timeFormat = DateFormat('HH:mm');
 
     for (var row in data) {
@@ -77,12 +78,12 @@ class _FloorOnePageState extends State<FloorOnePage> {
 
           String newStatus;
 
-          if (now.isAfter(endTime.add(const Duration(days: 1)))) {
+          if (now.isAfter(endTime)) {
             newStatus = 'Finished';
-          } else if (now.isAfter(startTime.add(const Duration(days: 1))) &&
-              now.isBefore(endTime.add(const Duration(days: 1)))) {
+          }
+          if (now.isAfter(startTime) && now.isBefore(endTime)) {
             newStatus = 'Active';
-          } else if (now.isBefore(startTime)) {
+          } else if (now.isBefore(startTime) && currentStatus == 'Active') {
             newStatus = 'Pending';
           } else {
             newStatus = currentStatus; // No change

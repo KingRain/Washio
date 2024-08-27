@@ -28,9 +28,11 @@ class _BookingPageState extends State<BookingPage> {
       return;
     }
 
-    // Format the start and stop times as strings
-    final formattedStartTime = startTime!.format(context);
-    final formattedStopTime = stopTime!.format(context);
+    // Format the start and stop times in 24-hour format
+    final formattedStartTime =
+        '${startTime!.hour.toString().padLeft(2, '0')}:${startTime!.minute.toString().padLeft(2, '0')}';
+    final formattedStopTime =
+        '${stopTime!.hour.toString().padLeft(2, '0')}:${stopTime!.minute.toString().padLeft(2, '0')}';
 
     // Check if the slot already exists
     final existingSlots = await Supabase.instance.client
