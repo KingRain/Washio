@@ -12,47 +12,29 @@ class FloorOnePage extends StatefulWidget {
 }
 
 class _FloorOnePageState extends State<FloorOnePage> {
-  Future<List<Map<String, dynamic>>> fetchSupabaseData() async {
-    try {
-      final response = await Supabase.instance.client
-          .from('floor1')
-          .select('Name, Slot, Status');
+  late Future<List<Map<String, dynamic>>> futureData;
 
-      if (response.isEmpty) {
-        throw Exception('No data found in Supabase');
-      }
-
-      List<Map<String, dynamic>> data =
-          List<Map<String, dynamic>>.from(response);
-
-      final DateFormat timeFormat = DateFormat('HH:mm');
-
-      data.sort((a, b) {
-        try {
-          DateTime startTimeA =
-              timeFormat.parse(a['Slot'].toString().split('\n').first);
-          DateTime startTimeB =
-              timeFormat.parse(b['Slot'].toString().split('\n').first);
-          return startTimeA.compareTo(startTimeB);
-        } catch (e) {
-          // Handle any parsing errors, default to no change in order
-          print('Error parsing slot times: $e');
-          return 0;
-        }
-      });
-
-      return data;
-    } catch (e) {
-      // Handle errors that occurred during the request or processing
-      print('Error fetching data: $e');
-      throw Exception('Failed to fetch data from Supabase');
-    }
+  @override
+  void initState() {
+    super.initState();
+    futureData = updateStatusAndFetchData();
   }
 
-  Future<void> updateStatusBasedOnTime() async {
+  Future<List<Map<String, dynamic>>> fetchSupabaseData() async {
+    final response = await Supabase.instance.client
+        .from('floor1')
+        .select('Name, Slot, Status')
+        .order('Slot', ascending: true);
+
+    if (response.isEmpty) {
+      throw Exception('No data found in Supabase');
+    }
+    return List<Map<String, dynamic>>.from(response);
+  }
+
+  Future<List<Map<String, dynamic>>> updateStatusAndFetchData() async {
     final data = await fetchSupabaseData();
-    final DateTime now = DateTime
-        .now(); //Returns current date and time like 2021-10-10 09:00:00.000
+    final DateTime now = DateTime.now();
     final DateFormat timeFormat = DateFormat('HH:mm');
 
     for (var row in data) {
@@ -60,30 +42,25 @@ class _FloorOnePageState extends State<FloorOnePage> {
       String currentStatus = row['Status'].toString();
 
       try {
-        List<String> slotTimes = slot.split('\n').map((e) {
-          return e.split(' ').first;
-        }).toList(); //Returns data like ['09:00', '10:00']
+        List<String> slotTimes = slot.split('\n');
 
         if (slotTimes.length == 2) {
-          DateTime startTime =
-              timeFormat.parse(slotTimes[0]); //Returns data like 09:00 PM
-          DateTime endTime =
-              timeFormat.parse(slotTimes[1]); //Returns data like 10:00 PM
+          DateTime startTime = timeFormat.parse(slotTimes[0]);
+          DateTime endTime = timeFormat.parse(slotTimes[1]);
 
           // Adjusting to current date
-          startTime = DateTime(now.year, now.month, now.day, startTime.hour,
-              startTime.minute); //Returns data like 2021-10-10 09:00:00.000
-          endTime = DateTime(now.year, now.month, now.day, endTime.hour,
-              endTime.minute); //Returns data like 2021-10-10 10:00:00.000
+          startTime = DateTime(
+              now.year, now.month, now.day, startTime.hour, startTime.minute);
+          endTime = DateTime(
+              now.year, now.month, now.day, endTime.hour, endTime.minute);
 
           String newStatus;
 
           if (now.isAfter(endTime)) {
             newStatus = 'Finished';
-          }
-          if (now.isAfter(startTime) && now.isBefore(endTime)) {
+          } else if (now.isAfter(startTime) && now.isBefore(endTime)) {
             newStatus = 'Active';
-          } else if (now.isBefore(startTime) && currentStatus == 'Active') {
+          } else if (now.isBefore(startTime)) {
             newStatus = 'Pending';
           } else {
             newStatus = currentStatus; // No change
@@ -102,8 +79,8 @@ class _FloorOnePageState extends State<FloorOnePage> {
       }
     }
 
-    // Refresh the UI by fetching the updated data
-    setState(() {});
+    // Return the updated data
+    return data;
   }
 
   String getCurrentDate() {
@@ -140,7 +117,9 @@ class _FloorOnePageState extends State<FloorOnePage> {
           IconButton(
             icon: const Icon(Icons.refresh, color: Colors.white),
             onPressed: () async {
-              await updateStatusBasedOnTime();
+              setState(() {
+                futureData = updateStatusAndFetchData();
+              });
             },
           ),
         ],
@@ -162,7 +141,7 @@ class _FloorOnePageState extends State<FloorOnePage> {
             const SizedBox(height: 20),
             Expanded(
               child: FutureBuilder<List<Map<String, dynamic>>>(
-                future: fetchSupabaseData(),
+                future: futureData,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -180,13 +159,14 @@ class _FloorOnePageState extends State<FloorOnePage> {
                       child: DataTable(
                         columns: columns.map<DataColumn>((column) {
                           return DataColumn(
-                            label:
-                                Text(column.replaceAll('_', ' ').toUpperCase(),
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'JetBrains Mono',
-                                    )),
+                            label: Text(
+                              column.replaceAll('_', ' ').toUpperCase(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'JetBrains Mono',
+                              ),
+                            ),
                           );
                         }).toList(),
                         rows: data.map<DataRow>((row) {
@@ -245,3 +225,18 @@ class _FloorOnePageState extends State<FloorOnePage> {
     );
   }
 }
+
+
+
+/*
+          if (now.isAfter(endTime)) {
+            newStatus = 'Finished';
+          }
+          if (now.isAfter(startTime) && now.isBefore(endTime)) {
+            newStatus = 'Active';
+          } else if (now.isBefore(startTime) && currentStatus == 'Active') {
+            newStatus = 'Pending';
+          } else {
+            newStatus = currentStatus; // No change
+          }
+*/

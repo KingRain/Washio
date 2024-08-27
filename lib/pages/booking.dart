@@ -52,9 +52,10 @@ class _BookingPageState extends State<BookingPage> {
 
     final response = await Supabase.instance.client
         .from('floor1')
-        .insert({'Name': name, 'RoomNo': roomNo, 'Slot': slot});
+        .insert({'Name': "$name ($roomNo)", 'RoomNo': roomNo, 'Slot': slot});
 
-    if (response.error == null) {
+    //Todo: fix error checking
+    if (response.error != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Slot booked successfully!')),
       );
