@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:washio/pages/home.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class BookingPage extends StatefulWidget {
-  const BookingPage({super.key});
+class BookingPageOne extends StatefulWidget {
+  const BookingPageOne({super.key});
 
   @override
-  _BookingPageState createState() => _BookingPageState();
+  _BookingPageOneState createState() => _BookingPageOneState();
 }
 
-class _BookingPageState extends State<BookingPage> {
+class _BookingPageOneState extends State<BookingPageOne> {
   final _formKey = GlobalKey<FormState>();
 
   String name = '';
@@ -90,13 +90,14 @@ class _BookingPageState extends State<BookingPage> {
     });
 
     //Todo: fix error checking
-    if (response.error != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Error booking slot')),
-      );
-    } else if (response.error == null) {
+    if (response.error == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Slot booked successfully!')),
+      );
+      Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to book slot!')),
       );
       Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
     }
@@ -112,6 +113,7 @@ class _BookingPageState extends State<BookingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text(
           'Book a Slot',

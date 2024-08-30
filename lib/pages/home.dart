@@ -7,9 +7,51 @@ import '../pages/firstFloor.dart';
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
+  void _showInfoDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            'Dev Information',
+            style: TextStyle(
+              fontFamily: 'JetBrains Mono',
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: const Text(
+            'Developed by Sam Joe in Flutter\n'
+            'Instagram: @samjoe.png\n'
+            'Github: github.com/KingRain\n'
+            'Website: samjoe.tech\n',
+            style: TextStyle(
+              fontFamily: 'JetBrains Mono',
+              color: Color.fromARGB(255, 29, 29, 29),
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: const Text(
+                'Close',
+                style: TextStyle(
+                  color: Color.fromARGB(255, 169, 0, 0),
+                  fontFamily: 'JetBrains Mono',
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text(
           'Wash.io',
@@ -20,24 +62,24 @@ class HomePage extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        centerTitle: true,
+        centerTitle: false,
         backgroundColor: const Color.fromARGB(255, 64, 64, 64),
-        leading: Container(
-          margin: const EdgeInsets.all(6),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: const Color.fromARGB(0, 255, 255, 255),
+        actions: [
+          IconButton(
+            icon: SvgPicture.asset(
+              'assets/icons/info-icon.svg',
+              width: 28,
+              height: 28,
+              placeholderBuilder: (context) =>
+                  const CircularProgressIndicator(),
+              color: Colors.white,
+              fit: BoxFit.contain,
+            ),
+            onPressed: () {
+              _showInfoDialog(context); // Show the info dialog
+            },
           ),
-          child: SvgPicture.asset(
-            'assets/icons/HomeIcon.svg',
-            width: 24, // Adjusted size for visibility
-            height: 24, // Adjusted size for visibility
-            placeholderBuilder: (context) =>
-                const CircularProgressIndicator(), // Loading placeholder
-            color: Colors.white, // Optional: Adjust icon color
-            fit: BoxFit.contain,
-          ),
-        ),
+        ],
       ),
       body: Center(
         child: Column(
@@ -53,16 +95,36 @@ class HomePage extends StatelessWidget {
                   Icons.error,
                   color: Colors.red,
                   size: 200,
-                ); // Display an error icon if the image fails to load
+                );
               },
             ),
             const SizedBox(height: 10),
-            const Text(
-              'Select the floor',
-              style: TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
-                fontSize: 32,
-                fontFamily: 'JetBrains Mono',
+            const Expanded(
+              child: Align(
+                alignment: Alignment.center,
+                child: Column(
+                  children: [
+                    Text(
+                      'Select your floor',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 255, 255, 255),
+                        fontSize: 32,
+                        fontFamily: 'JetBrains Mono',
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.normal,
+                      ),
+                    ),
+                    Text(
+                      'Kalapurackal Edition',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 255, 200, 0),
+                        fontSize: 16,
+                        fontFamily: 'JetBrains Mono',
+                        fontStyle: FontStyle.italic,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 20),
@@ -126,13 +188,32 @@ class HomePage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 150),
-            const Text(
-              'Powered by Wash.io',
-              style: TextStyle(
-                color: Color.fromARGB(255, 255, 255, 255),
-                fontSize: 16,
-                fontFamily: 'JetBrains Mono',
+            const SizedBox(height: 120),
+            const Expanded(
+              child: Align(
+                alignment: Alignment.center,
+                child: Column(
+                  children: [
+                    Text(
+                      'Developed by Sam Joe',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 255, 255, 255),
+                        fontSize: 14,
+                        fontFamily: 'JetBrains Mono',
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                    Text(
+                      'UI/UX by Basil',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 255, 255, 255),
+                        fontSize: 14,
+                        fontFamily: 'JetBrains Mono',
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

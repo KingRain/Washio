@@ -3,7 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:washio/pages/booking.dart';
+import 'package:washio/pages/booking_one.dart';
+import 'package:washio/pages/booking_two.dart';
 import 'package:washio/pages/home.dart';
 
 class FloorTwoPage extends StatefulWidget {
@@ -76,13 +77,36 @@ class _FloorTwoPageState extends State<FloorTwoPage> {
           }
         }
       } catch (e) {
-        // Handle any parsing errors
-        // print('Error parsing slot times: $e');
+        //print('Error parsing slot times: $e');
       }
     }
 
-    // Return the updated data
     return data;
+  }
+
+  bool isSlotOverlap(DateTime newStartTime, DateTime newEndTime,
+      List<Map<String, dynamic>> existingData) {
+    final DateFormat timeFormat = DateFormat('HH:mm');
+
+    for (var row in existingData) {
+      List<String> slotTimes = row['Slot'].toString().split('\n');
+      if (slotTimes.length == 2) {
+        DateTime existingStartTime = timeFormat.parse(slotTimes[0]);
+        DateTime existingEndTime = timeFormat.parse(slotTimes[1]);
+
+        // Adjusting to current date
+        existingStartTime = DateTime(newStartTime.year, newStartTime.month,
+            newStartTime.day, existingStartTime.hour, existingStartTime.minute);
+        existingEndTime = DateTime(newEndTime.year, newEndTime.month,
+            newEndTime.day, existingEndTime.hour, existingEndTime.minute);
+
+        if (newStartTime.isBefore(existingEndTime) &&
+            newEndTime.isAfter(existingStartTime)) {
+          return true; // Overlap detected
+        }
+      }
+    }
+    return false; // No overlap
   }
 
   String getCurrentDate() {
@@ -94,6 +118,7 @@ class _FloorTwoPageState extends State<FloorTwoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -137,6 +162,16 @@ class _FloorTwoPageState extends State<FloorTwoPage> {
                 color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
+                fontFamily: 'JetBrains Mono',
+              ),
+            ),
+            const Text(
+              'Refresh the page for updating the list',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.normal,
+                fontStyle: FontStyle.italic,
                 fontFamily: 'JetBrains Mono',
               ),
             ),
@@ -218,7 +253,7 @@ class _FloorTwoPageState extends State<FloorTwoPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const BookingPage()),
+            MaterialPageRoute(builder: (context) => const BookingPageTwo()),
           );
         },
         backgroundColor: Colors.deepPurple,

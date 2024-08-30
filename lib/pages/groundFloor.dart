@@ -3,7 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:washio/pages/booking.dart';
+import 'package:washio/pages/booking_one.dart';
+import 'package:washio/pages/booking_zero.dart';
 import 'package:washio/pages/home.dart';
 
 class FloorZeroPage extends StatefulWidget {
@@ -94,6 +95,7 @@ class _FloorZeroPageState extends State<FloorZeroPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -137,6 +139,16 @@ class _FloorZeroPageState extends State<FloorZeroPage> {
                 color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
+                fontFamily: 'JetBrains Mono',
+              ),
+            ),
+            const Text(
+              'Refresh the page for updating the list',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.normal,
+                fontStyle: FontStyle.italic,
                 fontFamily: 'JetBrains Mono',
               ),
             ),
@@ -218,7 +230,7 @@ class _FloorZeroPageState extends State<FloorZeroPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const BookingPage()),
+            MaterialPageRoute(builder: (context) => const BookingPageZero()),
           );
         },
         backgroundColor: Colors.deepPurple,

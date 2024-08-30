@@ -1,7 +1,5 @@
 # Wash.io 👕
 
----
-
 Wash.io is a convenient app that allows users to book a time slot for using the washing machine on their floor. The app also sends notification alerts to remind users of their booking and keep them updated on the machine's availability.
 
 ## Features ✨
@@ -14,12 +12,25 @@ Wash.io is a convenient app that allows users to book a time slot for using the 
 
 To run the Wash.io app locally, follow these steps:
 
-1. Clone the repository:
+1. Install flutter
+
+2. Clone the repository:
 
    ```bash
    git clone https://github.com/KingRain/Washio.git
    cd washio
    ```
 
-2. Install Flutter
-3. Run the command `Flutter run`
+3. Enter your superbase credentials at `/lib/main.dart`
+```dart
+await Supabase.initialize(
+      url: 'https://smth.supabase.co',
+      anonKey: 'xyz', // Replace with your Supabase anonymous key
+    );
+```
+
+4. Run `flutter run`
+
+## Contributing 🦆
+
+Clone the GitHub repo -> make changes -> submit a pull request.
