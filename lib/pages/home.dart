@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:machinex/pages/groundfloor.dart';
-import 'package:machinex/pages/secondfloor.dart';
-import 'firstfloor.dart';
+import '../pages/groundFloor.dart';
+import '../pages/secondFloor.dart';
+import '../pages/firstFloor.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -11,13 +11,15 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Wash.io',
-            style: TextStyle(
-              color: Color.fromARGB(255, 255, 255, 255),
-              fontSize: 20,
-              fontFamily: 'JetBrains Mono',
-              fontWeight: FontWeight.bold,
-            )),
+        title: const Text(
+          'Wash.io',
+          style: TextStyle(
+            color: Color.fromARGB(255, 255, 255, 255),
+            fontSize: 20,
+            fontFamily: 'JetBrains Mono',
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 64, 64, 64),
         leading: Container(
@@ -27,9 +29,13 @@ class HomePage extends StatelessWidget {
             color: const Color.fromARGB(0, 255, 255, 255),
           ),
           child: SvgPicture.asset(
-            '../assets/icons/HomeIcon.svg',
-            width: 16,
-            height: 16,
+            'assets/icons/HomeIcon.svg',
+            width: 24, // Adjusted size for visibility
+            height: 24, // Adjusted size for visibility
+            placeholderBuilder: (context) =>
+                const CircularProgressIndicator(), // Loading placeholder
+            color: Colors.white, // Optional: Adjust icon color
+            fit: BoxFit.contain,
           ),
         ),
       ),
@@ -39,34 +45,46 @@ class HomePage extends StatelessWidget {
           children: <Widget>[
             const SizedBox(height: 10),
             Image.asset(
-              '../assets/images/main-icon.png',
+              'assets/images/main-icon.png',
               width: 200,
               height: 200,
+              errorBuilder: (context, error, stackTrace) {
+                return const Icon(
+                  Icons.error,
+                  color: Colors.red,
+                  size: 200,
+                ); // Display an error icon if the image fails to load
+              },
             ),
             const SizedBox(height: 10),
-            const Text('Select the floor',
-                style: TextStyle(
-                  color: Color.fromARGB(255, 255, 255, 255),
-                  fontSize: 32,
-                  fontFamily: 'JetBrains Mono',
-                )),
+            const Text(
+              'Select the floor',
+              style: TextStyle(
+                color: Color.fromARGB(255, 255, 255, 255),
+                fontSize: 32,
+                fontFamily: 'JetBrains Mono',
+              ),
+            ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => FloorZeroPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const FloorZeroPage()),
                 );
               },
               style: ElevatedButton.styleFrom(
                 fixedSize: const Size(200, 50),
               ),
-              child: const Text('Ground Floor',
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0),
-                    fontSize: 16,
-                    fontFamily: 'JetBrains Mono',
-                  )),
+              child: const Text(
+                'Ground Floor',
+                style: TextStyle(
+                  color: Color.fromARGB(255, 0, 0, 0),
+                  fontSize: 16,
+                  fontFamily: 'JetBrains Mono',
+                ),
+              ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -79,12 +97,14 @@ class HomePage extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 fixedSize: const Size(200, 50),
               ),
-              child: const Text('First Floor',
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0),
-                    fontSize: 16,
-                    fontFamily: 'JetBrains Mono',
-                  )),
+              child: const Text(
+                'First Floor',
+                style: TextStyle(
+                  color: Color.fromARGB(255, 0, 0, 0),
+                  fontSize: 16,
+                  fontFamily: 'JetBrains Mono',
+                ),
+              ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -97,24 +117,28 @@ class HomePage extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 fixedSize: const Size(200, 50),
               ),
-              child: const Text('Second Floor',
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0),
-                    fontSize: 16,
-                    fontFamily: 'JetBrains Mono',
-                  )),
-            ),
-            const SizedBox(height: 150),
-            const Text('Powered by Wash.io',
+              child: const Text(
+                'Second Floor',
                 style: TextStyle(
-                  color: Color.fromARGB(255, 255, 255, 255),
+                  color: Color.fromARGB(255, 0, 0, 0),
                   fontSize: 16,
                   fontFamily: 'JetBrains Mono',
-                )),
+                ),
+              ),
+            ),
+            const SizedBox(height: 150),
+            const Text(
+              'Powered by Wash.io',
+              style: TextStyle(
+                color: Color.fromARGB(255, 255, 255, 255),
+                fontSize: 16,
+                fontFamily: 'JetBrains Mono',
+              ),
+            ),
           ],
         ),
       ),
-      backgroundColor: const Color.fromARGB(255, 29, 29, 29), // Add this line
+      backgroundColor: const Color.fromARGB(255, 29, 29, 29),
     );
   }
 }

@@ -1,8 +1,10 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:machinex/pages/booking.dart';
-import 'package:machinex/pages/home.dart';
+import 'package:washio/pages/booking.dart';
+import 'package:washio/pages/home.dart';
 
 class FloorOnePage extends StatefulWidget {
   const FloorOnePage({super.key});
@@ -74,13 +76,36 @@ class _FloorOnePageState extends State<FloorOnePage> {
           }
         }
       } catch (e) {
-        // Handle any parsing errors
-        print('Error parsing slot times: $e');
+        //print('Error parsing slot times: $e');
       }
     }
 
-    // Return the updated data
     return data;
+  }
+
+  bool isSlotOverlap(DateTime newStartTime, DateTime newEndTime,
+      List<Map<String, dynamic>> existingData) {
+    final DateFormat timeFormat = DateFormat('HH:mm');
+
+    for (var row in existingData) {
+      List<String> slotTimes = row['Slot'].toString().split('\n');
+      if (slotTimes.length == 2) {
+        DateTime existingStartTime = timeFormat.parse(slotTimes[0]);
+        DateTime existingEndTime = timeFormat.parse(slotTimes[1]);
+
+        // Adjusting to current date
+        existingStartTime = DateTime(newStartTime.year, newStartTime.month,
+            newStartTime.day, existingStartTime.hour, existingStartTime.minute);
+        existingEndTime = DateTime(newEndTime.year, newEndTime.month,
+            newEndTime.day, existingEndTime.hour, existingEndTime.minute);
+
+        if (newStartTime.isBefore(existingEndTime) &&
+            newEndTime.isAfter(existingStartTime)) {
+          return true; // Overlap detected
+        }
+      }
+    }
+    return false; // No overlap
   }
 
   String getCurrentDate() {
@@ -104,10 +129,10 @@ class _FloorOnePageState extends State<FloorOnePage> {
           },
         ),
         title: const Text(
-          'Floor 1',
+          'First Floor Slot Booking',
           style: TextStyle(
             color: Color.fromARGB(255, 255, 255, 255),
-            fontSize: 20,
+            fontSize: 16,
             fontFamily: 'JetBrains Mono',
             fontWeight: FontWeight.bold,
           ),
@@ -225,18 +250,3 @@ class _FloorOnePageState extends State<FloorOnePage> {
     );
   }
 }
-
-
-
-/*
-          if (now.isAfter(endTime)) {
-            newStatus = 'Finished';
-          }
-          if (now.isAfter(startTime) && now.isBefore(endTime)) {
-            newStatus = 'Active';
-          } else if (now.isBefore(startTime) && currentStatus == 'Active') {
-            newStatus = 'Pending';
-          } else {
-            newStatus = currentStatus; // No change
-          }
-*/

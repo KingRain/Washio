@@ -1,4 +1,4 @@
-package com.example.machinex
+package com.example.washio
 
 import io.flutter.embedding.android.FlutterActivity
 

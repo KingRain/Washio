@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:machinex/pages/home.dart';
+import 'package:washio/pages/home.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class BookingPage extends StatefulWidget {
@@ -16,6 +16,7 @@ class _BookingPageState extends State<BookingPage> {
 
   String name = '';
   String roomNo = '';
+  String phoneNo = '';
   TimeOfDay? startTime;
   TimeOfDay? stopTime;
 
@@ -34,37 +35,70 @@ class _BookingPageState extends State<BookingPage> {
     final formattedStopTime =
         '${stopTime!.hour.toString().padLeft(2, '0')}:${stopTime!.minute.toString().padLeft(2, '0')}';
 
-    // Check if the slot already exists
-    final existingSlots = await Supabase.instance.client
-        .from('floor1')
-        .select('Slot')
-        .ilike('Slot', '%$formattedStartTime%')
-        .or('Slot.ilike.%$formattedStopTime%');
+    final int selectedStartTimeInMinutes =
+        startTime!.hour * 60 + startTime!.minute;
+    final int selectedStopTimeInMinutes =
+        stopTime!.hour * 60 + stopTime!.minute;
 
+    // Check if the slot already exists
+    final existingSlots =
+        await Supabase.instance.client.from('floor1').select('Slot');
+    /*
     if (existingSlots.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('This slot is already taken!')),
       );
       return;
     }
+    */
+
+    for (final slot in existingSlots) {
+      final List<String> times =
+          (slot['Slot'] as String).split('\n'); // Returns time like 9:00\n9:30
+      final start = times[0]; //Returns time like 9:00
+      final stop = times[1]; // Returns time like 9:30
+
+      // Convert existing slot times to minutes since midnight
+      final int existingStartTimeInMinutes =
+          int.parse(start.split(':')[0]) * 60 +
+              int.parse(start.split(':')[1]); //Returns time like 9:00 as 540
+      final int existingStopTimeInMinutes = int.parse(stop.split(':')[0]) * 60 +
+          int.parse(stop.split(':')[1]); //Returns time like 9:30 like 570
+
+      // Check if the selected slot overlaps with any existing slot
+
+      if ((selectedStartTimeInMinutes >= existingStartTimeInMinutes &&
+              selectedStartTimeInMinutes < existingStopTimeInMinutes) ||
+          (selectedStopTimeInMinutes > existingStartTimeInMinutes &&
+              selectedStopTimeInMinutes <= existingStopTimeInMinutes) ||
+          (selectedStartTimeInMinutes < existingStartTimeInMinutes &&
+              selectedStopTimeInMinutes > existingStopTimeInMinutes)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('This slot intersects with an existing slot!')),
+        );
+        return;
+      }
+    }
 
     final slot = '$formattedStartTime\n$formattedStopTime';
-
-    final response = await Supabase.instance.client
-        .from('floor1')
-        .insert({'Name': "$name ($roomNo)", 'RoomNo': roomNo, 'Slot': slot});
+    final response = await Supabase.instance.client.from('floor1').insert({
+      'Name': "$name ($roomNo)",
+      'RoomNo': roomNo,
+      'Slot': slot,
+      'PhoneNo': phoneNo
+    });
 
     //Todo: fix error checking
     if (response.error != null) {
       ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Error booking slot')),
+      );
+    } else if (response.error == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Slot booked successfully!')),
       );
       Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text('Failed to book slot: ${response.error!.message}')),
-      );
     }
   }
 
@@ -114,7 +148,7 @@ class _BookingPageState extends State<BookingPage> {
                     borderSide: BorderSide(color: Colors.white),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blue),
+                    borderSide: BorderSide(color: Colors.indigo),
                   ),
                 ),
                 style: const TextStyle(color: Colors.white),
@@ -142,7 +176,7 @@ class _BookingPageState extends State<BookingPage> {
                     borderSide: BorderSide(color: Colors.white),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blue),
+                    borderSide: BorderSide(color: Colors.indigo),
                   ),
                 ),
                 keyboardType: TextInputType.number,
@@ -159,6 +193,39 @@ class _BookingPageState extends State<BookingPage> {
                 onChanged: (value) {
                   setState(() {
                     roomNo = value;
+                  });
+                },
+              ),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Phone No.',
+                  labelStyle: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'JetBrains Mono',
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.indigo),
+                  ),
+                ),
+                keyboardType: TextInputType.number,
+                style: const TextStyle(color: Colors.white),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your phone number:';
+                  }
+                  if (int.tryParse(value) == null ||
+                      int.tryParse(value)!.toString().length != 10) {
+                    return 'Please enter a valid phone number';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  setState(() {
+                    phoneNo = value;
                   });
                 },
               ),
@@ -222,7 +289,11 @@ class _BookingPageState extends State<BookingPage> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: Colors.purple,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  fixedSize: const Size(200, 50),
                 ),
                 child: const Text(
                   'Submit',
