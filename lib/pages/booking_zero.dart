@@ -187,7 +187,8 @@ class _BookingPageZeroState extends State<BookingPageZero> {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your room number';
                   }
-                  if (int.tryParse(value) == null) {
+                  if (int.tryParse(value) == null ||
+                      int.tryParse(value)!.toString().length > 2) {
                     return 'Please enter a valid room number';
                   }
                   return null;
@@ -245,7 +246,8 @@ class _BookingPageZeroState extends State<BookingPageZero> {
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                              content: Text('Please select a valid time')),
+                            content: Text('Please select a valid time!'),
+                          ),
                         );
                       }
                     },
@@ -256,6 +258,7 @@ class _BookingPageZeroState extends State<BookingPageZero> {
                           ? 'Start Time: ${startTime!.format(context)}'
                           : 'Select Start Time',
                       style: const TextStyle(color: Colors.white),
+                      //Check if time is selected
                     ),
                   ),
                 ],
@@ -274,7 +277,8 @@ class _BookingPageZeroState extends State<BookingPageZero> {
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                              content: Text('Please select a valid time')),
+                            content: Text('Please select a valid time!'),
+                          ),
                         );
                       }
                     },
@@ -297,10 +301,6 @@ class _BookingPageZeroState extends State<BookingPageZero> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const HomePage()),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text('Slot booked successfully!')),
                     );
                   }
                 },

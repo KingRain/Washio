@@ -21,10 +21,24 @@ class _BookingPageOneState extends State<BookingPageOne> {
   TimeOfDay? stopTime;
 
   Future<void> submitData() async {
-    if (startTime == null || stopTime == null) {
+    if ((startTime == null || stopTime == null) ||
+        (startTime == null && stopTime == null)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content: Text('Please select both start and stop times')),
+      );
+      return;
+    } else if (startTime!.hour == stopTime!.hour &&
+        startTime!.minute == stopTime!.minute) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Start and stop times cannot be the same!')),
+      );
+      return;
+    } else if (startTime!.hour > stopTime!.hour) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Start time cannot be greater than stop time!')),
       );
       return;
     }
@@ -187,7 +201,8 @@ class _BookingPageOneState extends State<BookingPageOne> {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your room number';
                   }
-                  if (int.tryParse(value) == null) {
+                  if (int.tryParse(value) == null ||
+                      int.tryParse(value)!.toString().length > 2) {
                     return 'Please enter a valid room number';
                   }
                   return null;
@@ -242,6 +257,12 @@ class _BookingPageOneState extends State<BookingPageOne> {
                         setState(() {
                           startTime = selectedTime;
                         });
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please select a valid time!'),
+                          ),
+                        );
                       }
                     },
                   ),
@@ -251,6 +272,7 @@ class _BookingPageOneState extends State<BookingPageOne> {
                           ? 'Start Time: ${startTime!.format(context)}'
                           : 'Select Start Time',
                       style: const TextStyle(color: Colors.white),
+                      //Check if time is selected
                     ),
                   ),
                 ],
@@ -266,6 +288,12 @@ class _BookingPageOneState extends State<BookingPageOne> {
                         setState(() {
                           stopTime = selectedTime;
                         });
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please select a valid time!'),
+                          ),
+                        );
                       }
                     },
                   ),

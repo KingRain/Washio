@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:washio/pages/booking_one.dart';
 import 'package:washio/pages/home.dart';
 
@@ -19,7 +20,34 @@ class _FloorOnePageState extends State<FloorOnePage> {
   @override
   void initState() {
     super.initState();
+    checkAndClearData();
     futureData = updateStatusAndFetchData();
+  }
+
+  Future<void> checkAndClearData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String currentDate = getCurrentDate();
+    final String? lastClearDate = prefs.getString('lastClearDate');
+
+    if (lastClearDate == null || lastClearDate != currentDate) {
+      await clearSupabaseData();
+      await prefs.setString('lastClearDate', currentDate);
+    }
+  }
+
+  Future<void> clearSupabaseData() async {
+    final response = await Supabase.instance.client
+        .from('floor1')
+        .delete()
+        .neq('Name', '')
+        .neq('RoomNo', '')
+        .neq('Slot', '')
+        .neq('PhoneNo', '')
+        .neq('Status', '');
+
+    if (response.error != null) {
+      throw Exception('Failed to clear data: ${response.error!.message}');
+    }
   }
 
   Future<List<Map<String, dynamic>>> fetchSupabaseData() async {

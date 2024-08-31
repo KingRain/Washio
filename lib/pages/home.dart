@@ -23,7 +23,8 @@ class HomePage extends StatelessWidget {
             'Developed by Sam Joe in Flutter\n'
             'Instagram: @samjoe.png\n'
             'Github: github.com/KingRain\n'
-            'Website: samjoe.tech\n',
+            'Website: samjoe.tech\n'
+            'Support ☕: buymeacoffee.com/samjoe.png',
             style: TextStyle(
               fontFamily: 'JetBrains Mono',
               color: Color.fromARGB(255, 29, 29, 29),

@@ -187,7 +187,8 @@ class _BookingPageTwoState extends State<BookingPageTwo> {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your room number';
                   }
-                  if (int.tryParse(value) == null) {
+                  if (int.tryParse(value) == null ||
+                      int.tryParse(value)!.toString().length > 2) {
                     return 'Please enter a valid room number';
                   }
                   return null;
@@ -242,6 +243,12 @@ class _BookingPageTwoState extends State<BookingPageTwo> {
                         setState(() {
                           startTime = selectedTime;
                         });
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please select a valid time!'),
+                          ),
+                        );
                       }
                     },
                   ),
@@ -251,6 +258,7 @@ class _BookingPageTwoState extends State<BookingPageTwo> {
                           ? 'Start Time: ${startTime!.format(context)}'
                           : 'Select Start Time',
                       style: const TextStyle(color: Colors.white),
+                      //Check if time is selected
                     ),
                   ),
                 ],
@@ -266,6 +274,12 @@ class _BookingPageTwoState extends State<BookingPageTwo> {
                         setState(() {
                           stopTime = selectedTime;
                         });
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please select a valid time!'),
+                          ),
+                        );
                       }
                     },
                   ),

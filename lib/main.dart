@@ -9,10 +9,8 @@ Future<void> main() async {
   // Initialize Supabase
   try {
     await Supabase.initialize(
-      url: 'https://dszccundlyavftavfljq.supabase.co',
-      //use .env and fetch the key from there
-      anonKey:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRzemNjdW5kbHlhdmZ0YXZmbGpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjQ1OTg1MzAsImV4cCI6MjA0MDE3NDUzMH0.KNYjh3Lf667cZzgU11ACDIfztwZ3PYcokwOE3hwIqZ8', // Replace with your Supabase anonymous key
+      url: 'https://xyz.supabase.co', //Replace with your Supabase URL
+      anonKey: '', // Replace with your Supabase anonymous key
     );
   } catch (e) {
     // Handle initialization error

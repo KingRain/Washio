@@ -34,3 +34,7 @@ await Supabase.initialize(
 ## Contributing 🦆
 
 Clone the GitHub repo -> make changes -> submit a pull request.
+
+## Support ☕
+
+[Buy Me a coffee](https://buymeacoffee.com/samjoe.png)
