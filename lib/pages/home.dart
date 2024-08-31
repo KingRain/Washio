@@ -24,7 +24,11 @@ class HomePage extends StatelessWidget {
             'Instagram: @samjoe.png\n'
             'Github: github.com/KingRain\n'
             'Website: samjoe.tech\n'
-            'Support ☕: buymeacoffee.com/samjoe.png',
+            'Support ☕: buymeacoffee.com/samjoe.png\n'
+            ''
+            'UI/UX by Basil\n'
+            'Instagram: @basi__gar\n'
+            'Github: github.com/Basil-World\n',
             style: TextStyle(
               fontFamily: 'JetBrains Mono',
               color: Color.fromARGB(255, 29, 29, 29),

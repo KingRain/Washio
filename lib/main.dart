@@ -10,7 +10,7 @@ Future<void> main() async {
   try {
     await Supabase.initialize(
       url: 'https://xyz.supabase.co', //Replace with your Supabase URL
-      anonKey: '', // Replace with your Supabase anonymous key
+      anonKey: 'xyz', // Replace with your Supabase anonymous key
     );
   } catch (e) {
     // Handle initialization error

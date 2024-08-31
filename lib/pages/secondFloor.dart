@@ -37,7 +37,7 @@ class _FloorTwoPageState extends State<FloorTwoPage> {
 
   Future<void> clearSupabaseData() async {
     final response = await Supabase.instance.client
-        .from('floor0')
+        .from('floor2')
         .delete()
         .neq('Name', '')
         .neq('RoomNo', '')
