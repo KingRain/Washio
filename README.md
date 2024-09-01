@@ -27,7 +27,7 @@ To run the Wash.io app locally, follow these steps:
 
 4. **Configure Supabase Credentials**
 
-Add your superbase credentials in `/lib/main.dart`
+   Add your superbase credentials in `/lib/main.dart`
 ```dart
 await Supabase.initialize(
       url: 'https://smth.supabase.co',
@@ -37,7 +37,7 @@ await Supabase.initialize(
 
 4. **Run the App**
 
-Use the following command to run the app:
+   Use the following command to run the app:
 Run `flutter run`
 
 ## Contributing 🦆
