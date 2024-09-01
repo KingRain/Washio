@@ -2,6 +2,8 @@
 
 Wash.io is a convenient app that allows users to book a time slot for using the washing machine on their floor. The app also sends notification alerts to remind users of their booking and keep them updated on the machine's availability.
 
+<img src="https://cdn.discordapp.com/attachments/883222664066502716/1279666940914434101/showcase-img.png?ex=66d54635&is=66d3f4b5&hm=688f7787d7f5562a952464cbb9372d242bd425e53b5d02e11d5242dcb9d7c2e2&" alt="showcase" height="300"/>
+
 ## Features ✨
 
 - **Time Slot Booking**: Users can easily book a time slot for using the washing machine on their floor.
