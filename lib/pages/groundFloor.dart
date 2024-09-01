@@ -172,7 +172,7 @@ class _FloorZeroPageState extends State<FloorZeroPage> {
             const Text(
               'Refresh the page for updating the list',
               style: TextStyle(
-                color: Colors.white,
+                color: Color.fromARGB(255, 109, 109, 109),
                 fontSize: 14,
                 fontWeight: FontWeight.normal,
                 fontStyle: FontStyle.italic,
@@ -181,72 +181,79 @@ class _FloorZeroPageState extends State<FloorZeroPage> {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: FutureBuilder<List<Map<String, dynamic>>>(
-                future: futureData,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else {
-                    var data = snapshot.data!;
-                    if (data.isEmpty) {
-                      return const Center(child: Text('No data found'));
-                    }
-
-                    var columns = ['Name', 'Slot', 'Status'];
-
-                    return SingleChildScrollView(
-                      child: DataTable(
-                        columns: columns.map<DataColumn>((column) {
-                          return DataColumn(
-                            label: Text(
-                              column.replaceAll('_', ' ').toUpperCase(),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'JetBrains Mono',
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                        rows: data.map<DataRow>((row) {
-                          return DataRow(
-                            cells: columns.map<DataCell>((column) {
-                              String displayText = row[column].toString();
-                              TextStyle textStyle = const TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'JetBrains Mono',
-                              );
-
-                              if (column == 'Status' &&
-                                  row['Status'] == 'Active') {
-                                textStyle =
-                                    textStyle.copyWith(color: Colors.green);
-                              }
-
-                              if (column == 'Status' &&
-                                  row['Status'] == 'Finished') {
-                                textStyle = textStyle.copyWith(
-                                    color:
-                                        const Color.fromARGB(255, 66, 66, 66));
-                              }
-
-                              if (column == 'Status' &&
-                                  row['Status'] == 'Pending') {
-                                textStyle =
-                                    textStyle.copyWith(color: Colors.red);
-                              }
-
-                              return DataCell(
-                                  Text(displayText, style: textStyle));
-                            }).toList(),
-                          );
-                        }).toList(),
-                      ),
-                    );
-                  }
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  setState(() {
+                    futureData = updateStatusAndFetchData();
+                  });
                 },
+                child: FutureBuilder<List<Map<String, dynamic>>>(
+                  future: futureData,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                      var data = snapshot.data!;
+                      if (data.isEmpty) {
+                        return const Center(child: Text('No data found'));
+                      }
+
+                      var columns = ['Name', 'Slot', 'Status'];
+
+                      return SingleChildScrollView(
+                        child: DataTable(
+                          columns: columns.map<DataColumn>((column) {
+                            return DataColumn(
+                              label: Text(
+                                column.replaceAll('_', ' ').toUpperCase(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'JetBrains Mono',
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          rows: data.map<DataRow>((row) {
+                            return DataRow(
+                              cells: columns.map<DataCell>((column) {
+                                String displayText = row[column].toString();
+                                TextStyle textStyle = const TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'JetBrains Mono',
+                                );
+
+                                if (column == 'Status' &&
+                                    row['Status'] == 'Active') {
+                                  textStyle =
+                                      textStyle.copyWith(color: Colors.green);
+                                }
+
+                                if (column == 'Status' &&
+                                    row['Status'] == 'Finished') {
+                                  textStyle = textStyle.copyWith(
+                                      color: const Color.fromARGB(
+                                          255, 66, 66, 66));
+                                }
+
+                                if (column == 'Status' &&
+                                    row['Status'] == 'Pending') {
+                                  textStyle =
+                                      textStyle.copyWith(color: Colors.red);
+                                }
+
+                                return DataCell(
+                                    Text(displayText, style: textStyle));
+                              }).toList(),
+                            );
+                          }).toList(),
+                        ),
+                      );
+                    }
+                  },
+                ),
               ),
             ),
           ],

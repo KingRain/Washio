@@ -25,10 +25,14 @@ class HomePage extends StatelessWidget {
             'Github: github.com/KingRain\n'
             'Website: samjoe.tech\n'
             'Support ☕: buymeacoffee.com/samjoe.png\n'
-            ''
+            '\n'
             'UI/UX by Basil\n'
             'Instagram: @basi__gar\n'
-            'Github: github.com/Basil-World\n',
+            'Github: github.com/Basil-World\n'
+            '\n'
+            'Web Dev: Lestlin  Robins\n'
+            'Instagram: @lestlin_robins\n'
+            'Github: github.com/LestlinRobins\n',
             style: TextStyle(
               fontFamily: 'JetBrains Mono',
               color: Color.fromARGB(255, 29, 29, 29),
@@ -122,7 +126,7 @@ class HomePage extends StatelessWidget {
                     Text(
                       'Kalapurackal Edition',
                       style: TextStyle(
-                        color: Color.fromARGB(255, 255, 200, 0),
+                        color: Color.fromARGB(255, 109, 109, 109),
                         fontSize: 16,
                         fontFamily: 'JetBrains Mono',
                         fontStyle: FontStyle.italic,
@@ -200,18 +204,18 @@ class HomePage extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      'Developed by Sam Joe',
+                      'Version 1.0.1',
                       style: TextStyle(
-                        color: Color.fromARGB(255, 255, 255, 255),
+                        color: Color.fromARGB(255, 109, 109, 109),
                         fontSize: 14,
                         fontFamily: 'JetBrains Mono',
                         fontStyle: FontStyle.italic,
                       ),
                     ),
                     Text(
-                      'UI/UX by Basil',
+                      '© 2024 Washio. All rights reserved.',
                       style: TextStyle(
-                        color: Color.fromARGB(255, 255, 255, 255),
+                        color: Color.fromARGB(255, 109, 109, 109),
                         fontSize: 14,
                         fontFamily: 'JetBrains Mono',
                         fontStyle: FontStyle.italic,
