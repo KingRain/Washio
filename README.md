@@ -15,16 +15,18 @@ Wash.io is a streamlined solution for efficient laundry management in your hoste
 To run the Wash.io app locally, follow these steps:
 
 1. **Install Flutter**
+
    Ensure that Flutter is installed on your system.
 
-2. **Clone the repository:**
+3. **Clone the repository:**
 
    ```bash
    git clone https://github.com/KingRain/Washio.git
    cd washio
    ```
 
-3. **Configure Supabase Credentials**
+4. **Configure Supabase Credentials**
+
 Add your superbase credentials in `/lib/main.dart`
 ```dart
 await Supabase.initialize(
@@ -34,6 +36,7 @@ await Supabase.initialize(
 ```
 
 4. **Run the App**
+
 Use the following command to run the app:
 Run `flutter run`
 
