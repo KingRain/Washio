@@ -375,8 +375,7 @@ class _FloorOnePageState extends State<FloorOnePage> {
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'JetBrains Mono',
+                                      fontFamily: 'Inter',
                                     ),
                                   ),
                                   title: Column(
@@ -387,7 +386,7 @@ class _FloorOnePageState extends State<FloorOnePage> {
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 14,
-                                          fontFamily: 'JetBrains Mono',
+                                          fontFamily: 'Inter',
                                         ),
                                       ),
                                     ],
@@ -416,7 +415,9 @@ class _FloorOnePageState extends State<FloorOnePage> {
       ),
       backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       floatingActionButton: FloatingActionButton(
-        shape: const CircleBorder(),
+        shape: const CircleBorder(
+          side: BorderSide(color: Color.fromARGB(255, 0, 255, 8), width: 1),
+        ),
         onPressed: () {
           if (isNextDay) {
             Navigator.push(

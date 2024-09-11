@@ -16,15 +16,28 @@ class _BookingPageTwoState extends State<BookingPageTwo> {
 
   String name = '';
   String roomNo = '';
-  String phoneNo = '';
   TimeOfDay? startTime;
   TimeOfDay? stopTime;
 
   Future<void> submitData() async {
-    if (startTime == null || stopTime == null) {
+    if ((startTime == null || stopTime == null) ||
+        (startTime == null && stopTime == null)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content: Text('Please select both start and stop times')),
+      );
+      return;
+    } else if (startTime!.hour == stopTime!.hour &&
+        startTime!.minute == stopTime!.minute) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Start and stop times cannot be the same!')),
+      );
+      return;
+    } else if (startTime!.hour > stopTime!.hour) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Start time cannot be greater than stop time!')),
       );
       return;
     }
@@ -86,7 +99,7 @@ class _BookingPageTwoState extends State<BookingPageTwo> {
       'Name': "$name ($roomNo)",
       'RoomNo': roomNo,
       'Slot': slot,
-      'PhoneNo': phoneNo
+      'CurrentDay': "True"
     });
 
     //Todo: fix error checking
@@ -196,39 +209,6 @@ class _BookingPageTwoState extends State<BookingPageTwo> {
                 onChanged: (value) {
                   setState(() {
                     roomNo = value;
-                  });
-                },
-              ),
-              const SizedBox(height: 16.0),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Phone No.',
-                  labelStyle: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'JetBrains Mono',
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.indigo),
-                  ),
-                ),
-                keyboardType: TextInputType.number,
-                style: const TextStyle(color: Colors.white),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your phone number:';
-                  }
-                  if (int.tryParse(value) == null ||
-                      int.tryParse(value)!.toString().length != 10) {
-                    return 'Please enter a valid phone number';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  setState(() {
-                    phoneNo = value;
                   });
                 },
               ),

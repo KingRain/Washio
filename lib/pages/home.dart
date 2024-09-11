@@ -186,6 +186,10 @@ class _HomePageState extends State<HomePage>
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+          shape: RoundedRectangleBorder(
+            side: const BorderSide(color: Colors.white, width: 1),
+            borderRadius: BorderRadius.circular(10),
+          ),
           title: const Text(
             'Dev Information',
             style: TextStyle(
@@ -200,21 +204,20 @@ class _HomePageState extends State<HomePage>
               RichText(
                 text: TextSpan(
                   style: const TextStyle(
-                      color: Color.fromARGB(255, 255, 255,
-                          255)), // You can customize the text style
+                      color: Color.fromARGB(255, 255, 255, 255)),
                   children: [
                     const TextSpan(text: 'Developed by Sam Joe in Flutter\n'),
                     TextSpan(text: 'Instagram: ', children: [
                       TextSpan(
                         text: '@samjoe.png\n',
                         style: const TextStyle(
-                            color: Colors.blue,
+                            color: Colors.green,
                             decoration: TextDecoration.underline),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async {
                             const url = 'https://www.instagram.com/samjoe.png/';
-                            if (await canLaunch(url)) {
-                              await launch(url);
+                            if (await canLaunchUrl(Uri.parse(url))) {
+                              await launchUrl(Uri.parse(url));
                             } else {
                               throw 'Could not launch $url';
                             }
@@ -225,13 +228,13 @@ class _HomePageState extends State<HomePage>
                       TextSpan(
                         text: 'github.com/KingRain\n',
                         style: const TextStyle(
-                            color: Colors.blue,
+                            color: Colors.green,
                             decoration: TextDecoration.underline),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async {
                             const url = 'https://github.com/KingRain';
-                            if (await canLaunch(url)) {
-                              await launch(url);
+                            if (await canLaunchUrl(Uri.parse(url))) {
+                              await launchUrl(Uri.parse(url));
                             } else {
                               throw 'Could not launch $url';
                             }
@@ -242,13 +245,13 @@ class _HomePageState extends State<HomePage>
                       TextSpan(
                         text: 'samjoe.tech\n',
                         style: const TextStyle(
-                            color: Colors.blue,
+                            color: Colors.green,
                             decoration: TextDecoration.underline),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async {
                             const url = 'https://samjoe.tech';
-                            if (await canLaunch(url)) {
-                              await launch(url);
+                            if (await canLaunchUrl(Uri.parse(url))) {
+                              await launchUrl(Uri.parse(url));
                             } else {
                               throw 'Could not launch $url';
                             }
@@ -259,13 +262,13 @@ class _HomePageState extends State<HomePage>
                       TextSpan(
                         text: 'buymeacoffee.com/samjoe.png\n\n',
                         style: const TextStyle(
-                            color: Colors.blue,
+                            color: Colors.green,
                             decoration: TextDecoration.underline),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async {
                             const url = 'https://buymeacoffee.com/samjoe.png';
-                            if (await canLaunch(url)) {
-                              await launch(url);
+                            if (await canLaunchUrl(Uri.parse(url))) {
+                              await launchUrl(Uri.parse(url));
                             } else {
                               throw 'Could not launch $url';
                             }
@@ -277,13 +280,13 @@ class _HomePageState extends State<HomePage>
                       TextSpan(
                         text: '@basi__gar\n',
                         style: const TextStyle(
-                            color: Colors.blue,
+                            color: Colors.green,
                             decoration: TextDecoration.underline),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async {
                             const url = 'https://instagram.com/basi__gar';
-                            if (await canLaunch(url)) {
-                              await launch(url);
+                            if (await canLaunchUrl(Uri.parse(url))) {
+                              await launchUrl(Uri.parse(url));
                             } else {
                               throw 'Could not launch $url';
                             }
@@ -294,13 +297,13 @@ class _HomePageState extends State<HomePage>
                       TextSpan(
                         text: 'github.com/Basil-World\n\n',
                         style: const TextStyle(
-                            color: Colors.blue,
+                            color: Colors.green,
                             decoration: TextDecoration.underline),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async {
                             const url = 'https://github.com/Basil-World';
-                            if (await canLaunch(url)) {
-                              await launch(url);
+                            if (await canLaunchUrl(Uri.parse(url))) {
+                              await launchUrl(Uri.parse(url));
                             } else {
                               throw 'Could not launch $url';
                             }
@@ -312,13 +315,13 @@ class _HomePageState extends State<HomePage>
                       TextSpan(
                         text: '@lestlin_robins\n',
                         style: const TextStyle(
-                            color: Colors.blue,
+                            color: Colors.green,
                             decoration: TextDecoration.underline),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async {
                             const url = 'https://instagram.com/lestlin_robins';
-                            if (await canLaunch(url)) {
-                              await launch(url);
+                            if (await canLaunchUrl(Uri.parse(url))) {
+                              await launchUrl(Uri.parse(url));
                             } else {
                               throw 'Could not launch $url';
                             }
@@ -329,13 +332,13 @@ class _HomePageState extends State<HomePage>
                       TextSpan(
                         text: 'github.com/LestlinRobins\n',
                         style: const TextStyle(
-                            color: Colors.blue,
+                            color: Colors.green,
                             decoration: TextDecoration.underline),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async {
                             const url = 'https://github.com/LestlinRobins';
-                            if (await canLaunch(url)) {
-                              await launch(url);
+                            if (await canLaunchUrl(Uri.parse(url))) {
+                              await launchUrl(Uri.parse(url));
                             } else {
                               throw 'Could not launch $url';
                             }

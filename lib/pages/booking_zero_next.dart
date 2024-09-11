@@ -4,18 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:washio/pages/home.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class BookingPageZero extends StatefulWidget {
-  const BookingPageZero({super.key});
+class BookingPageZeroNext extends StatefulWidget {
+  const BookingPageZeroNext({super.key});
 
   @override
-  _BookingPageZeroState createState() => _BookingPageZeroState();
+  _BookingPageZeroNextState createState() => _BookingPageZeroNextState();
 }
 
-class _BookingPageZeroState extends State<BookingPageZero> {
+class _BookingPageZeroNextState extends State<BookingPageZeroNext> {
   final _formKey = GlobalKey<FormState>();
 
   String name = '';
   String roomNo = '';
+  String currentDay = '';
   TimeOfDay? startTime;
   TimeOfDay? stopTime;
 
@@ -55,7 +56,7 @@ class _BookingPageZeroState extends State<BookingPageZero> {
 
     // Check if the slot already exists
     final existingSlots =
-        await Supabase.instance.client.from('floor1').select('Slot');
+        await Supabase.instance.client.from('floor0_nextday').select('Slot');
     /*
     if (existingSlots.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -95,11 +96,13 @@ class _BookingPageZeroState extends State<BookingPageZero> {
     }
 
     final slot = '$formattedStartTime\n$formattedStopTime';
-    final response = await Supabase.instance.client.from('floor1').insert({
+    final response = await Supabase.instance.client
+        .from('floor0_nextday')
+        .insert({
       'Name': "$name ($roomNo)",
       'RoomNo': roomNo,
       'Slot': slot,
-      'CurrentDay': "True"
+      'CurrentDay': "False"
     });
 
     //Todo: fix error checking
