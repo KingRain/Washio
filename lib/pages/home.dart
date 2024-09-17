@@ -193,162 +193,224 @@ class _HomePageState extends State<HomePage>
           title: const Text(
             'Dev Information',
             style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Inter',
-                color: Color.fromARGB(255, 255, 255, 255)),
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Inter',
+              color: Color.fromARGB(255, 255, 255, 255),
+            ),
           ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(height: 10),
-              RichText(
-                text: TextSpan(
-                  style: const TextStyle(
-                      color: Color.fromARGB(255, 255, 255, 255)),
-                  children: [
-                    const TextSpan(text: 'Developed by Sam Joe in Flutter\n'),
-                    TextSpan(text: 'Instagram: ', children: [
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 10),
+                RichText(
+                  text: TextSpan(
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 255, 255, 255)),
+                    children: [
+                      const TextSpan(text: 'Developed by Sam Joe in Flutter\n'),
                       TextSpan(
-                        text: '@samjoe.png\n',
-                        style: const TextStyle(
-                            color: Colors.green,
-                            decoration: TextDecoration.underline),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () async {
-                            const url = 'https://www.instagram.com/samjoe.png/';
-                            if (await canLaunchUrl(Uri.parse(url))) {
-                              await launchUrl(Uri.parse(url));
-                            } else {
-                              throw 'Could not launch $url';
-                            }
-                          },
+                        text: 'Instagram: ',
+                        children: [
+                          TextSpan(
+                            text: '@samjoe.png\n',
+                            style: const TextStyle(
+                              color: Colors.green,
+                              decoration: TextDecoration.underline,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                const url =
+                                    'https://www.instagram.com/samjoe.png/';
+                                if (await canLaunchUrl(Uri.parse(url))) {
+                                  await launchUrl(
+                                    Uri.parse(url),
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                } else {
+                                  throw 'Could not launch $url';
+                                }
+                              },
+                          ),
+                        ],
                       ),
-                    ]),
-                    TextSpan(text: 'Github: ', children: [
                       TextSpan(
-                        text: 'github.com/KingRain\n',
-                        style: const TextStyle(
-                            color: Colors.green,
-                            decoration: TextDecoration.underline),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () async {
-                            const url = 'https://github.com/KingRain';
-                            if (await canLaunchUrl(Uri.parse(url))) {
-                              await launchUrl(Uri.parse(url));
-                            } else {
-                              throw 'Could not launch $url';
-                            }
-                          },
+                        text: 'Github: ',
+                        children: [
+                          TextSpan(
+                            text: 'github.com/KingRain\n',
+                            style: const TextStyle(
+                              color: Colors.green,
+                              decoration: TextDecoration.underline,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                const url = 'https://github.com/KingRain';
+                                if (await canLaunchUrl(Uri.parse(url))) {
+                                  await launchUrl(
+                                    Uri.parse(url),
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                } else {
+                                  throw 'Could not launch $url';
+                                }
+                              },
+                          ),
+                        ],
                       ),
-                    ]),
-                    TextSpan(text: 'Website: ', children: [
                       TextSpan(
-                        text: 'samjoe.tech\n',
-                        style: const TextStyle(
-                            color: Colors.green,
-                            decoration: TextDecoration.underline),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () async {
-                            const url = 'https://samjoe.tech';
-                            if (await canLaunchUrl(Uri.parse(url))) {
-                              await launchUrl(Uri.parse(url));
-                            } else {
-                              throw 'Could not launch $url';
-                            }
-                          },
+                        text: 'Website: ',
+                        children: [
+                          TextSpan(
+                            text: 'samjoe.tech\n',
+                            style: const TextStyle(
+                              color: Colors.green,
+                              decoration: TextDecoration.underline,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                const url = 'https://samjoe.tech';
+                                if (await canLaunchUrl(Uri.parse(url))) {
+                                  await launchUrl(
+                                    Uri.parse(url),
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                } else {
+                                  throw 'Could not launch $url';
+                                }
+                              },
+                          ),
+                        ],
                       ),
-                    ]),
-                    TextSpan(text: 'Support ☕: ', children: [
                       TextSpan(
-                        text: 'buymeacoffee.com/samjoe.png\n\n',
-                        style: const TextStyle(
-                            color: Colors.green,
-                            decoration: TextDecoration.underline),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () async {
-                            const url = 'https://buymeacoffee.com/samjoe.png';
-                            if (await canLaunchUrl(Uri.parse(url))) {
-                              await launchUrl(Uri.parse(url));
-                            } else {
-                              throw 'Could not launch $url';
-                            }
-                          },
+                        text: 'Support: ',
+                        children: [
+                          TextSpan(
+                            text: 'buymeacoffee.com/samjoe.png\n\n',
+                            style: const TextStyle(
+                              color: Colors.green,
+                              decoration: TextDecoration.underline,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                const url =
+                                    'https://buymeacoffee.com/samjoe.png';
+                                if (await canLaunchUrl(Uri.parse(url))) {
+                                  await launchUrl(
+                                    Uri.parse(url),
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                } else {
+                                  throw 'Could not launch $url';
+                                }
+                              },
+                          ),
+                        ],
                       ),
-                    ]),
-                    const TextSpan(text: 'UI/UX by Basil\n'),
-                    TextSpan(text: 'Instagram: ', children: [
+                      const TextSpan(text: 'UI/UX by Basil\n'),
                       TextSpan(
-                        text: '@basi__gar\n',
-                        style: const TextStyle(
-                            color: Colors.green,
-                            decoration: TextDecoration.underline),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () async {
-                            const url = 'https://instagram.com/basi__gar';
-                            if (await canLaunchUrl(Uri.parse(url))) {
-                              await launchUrl(Uri.parse(url));
-                            } else {
-                              throw 'Could not launch $url';
-                            }
-                          },
+                        text: 'Instagram: ',
+                        children: [
+                          TextSpan(
+                            text: '@basi__gar\n',
+                            style: const TextStyle(
+                              color: Colors.green,
+                              decoration: TextDecoration.underline,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                const url = 'https://instagram.com/basi__gar';
+                                if (await canLaunchUrl(Uri.parse(url))) {
+                                  await launchUrl(
+                                    Uri.parse(url),
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                } else {
+                                  throw 'Could not launch $url';
+                                }
+                              },
+                          ),
+                        ],
                       ),
-                    ]),
-                    TextSpan(text: 'Github: ', children: [
                       TextSpan(
-                        text: 'github.com/Basil-World\n\n',
-                        style: const TextStyle(
-                            color: Colors.green,
-                            decoration: TextDecoration.underline),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () async {
-                            const url = 'https://github.com/Basil-World';
-                            if (await canLaunchUrl(Uri.parse(url))) {
-                              await launchUrl(Uri.parse(url));
-                            } else {
-                              throw 'Could not launch $url';
-                            }
-                          },
+                        text: 'Github: ',
+                        children: [
+                          TextSpan(
+                            text: 'github.com/Basil-World\n\n',
+                            style: const TextStyle(
+                              color: Colors.green,
+                              decoration: TextDecoration.underline,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                const url = 'https://github.com/Basil-World';
+                                if (await canLaunchUrl(Uri.parse(url))) {
+                                  await launchUrl(
+                                    Uri.parse(url),
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                } else {
+                                  throw 'Could not launch $url';
+                                }
+                              },
+                          ),
+                        ],
                       ),
-                    ]),
-                    const TextSpan(text: 'Web Dev: Lestlin Robins\n'),
-                    TextSpan(text: 'Instagram: ', children: [
+                      const TextSpan(text: 'Web Dev: Lestlin Robins\n'),
                       TextSpan(
-                        text: '@lestlin_robins\n',
-                        style: const TextStyle(
-                            color: Colors.green,
-                            decoration: TextDecoration.underline),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () async {
-                            const url = 'https://instagram.com/lestlin_robins';
-                            if (await canLaunchUrl(Uri.parse(url))) {
-                              await launchUrl(Uri.parse(url));
-                            } else {
-                              throw 'Could not launch $url';
-                            }
-                          },
+                        text: 'Instagram: ',
+                        children: [
+                          TextSpan(
+                            text: '@lestlin_robins\n',
+                            style: const TextStyle(
+                              color: Colors.green,
+                              decoration: TextDecoration.underline,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                const url =
+                                    'https://instagram.com/lestlin_robins';
+                                if (await canLaunchUrl(Uri.parse(url))) {
+                                  await launchUrl(
+                                    Uri.parse(url),
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                } else {
+                                  throw 'Could not launch $url';
+                                }
+                              },
+                          ),
+                        ],
                       ),
-                    ]),
-                    TextSpan(text: 'Github: ', children: [
                       TextSpan(
-                        text: 'github.com/LestlinRobins\n',
-                        style: const TextStyle(
-                            color: Colors.green,
-                            decoration: TextDecoration.underline),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () async {
-                            const url = 'https://github.com/LestlinRobins';
-                            if (await canLaunchUrl(Uri.parse(url))) {
-                              await launchUrl(Uri.parse(url));
-                            } else {
-                              throw 'Could not launch $url';
-                            }
-                          },
+                        text: 'Github: ',
+                        children: [
+                          TextSpan(
+                            text: 'github.com/LestlinRobins\n',
+                            style: const TextStyle(
+                              color: Colors.green,
+                              decoration: TextDecoration.underline,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                const url = 'https://github.com/LestlinRobins';
+                                if (await canLaunchUrl(Uri.parse(url))) {
+                                  await launchUrl(
+                                    Uri.parse(url),
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                } else {
+                                  throw 'Could not launch $url';
+                                }
+                              },
+                          ),
+                        ],
                       ),
-                    ]),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           actions: [
             TextButton(
@@ -357,9 +419,7 @@ class _HomePageState extends State<HomePage>
               },
               child: const Text(
                 'Close',
-                style: TextStyle(
-                  color: Colors.red,
-                ),
+                style: TextStyle(color: Colors.red),
               ),
             ),
           ],

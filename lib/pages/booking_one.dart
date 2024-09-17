@@ -258,7 +258,10 @@ class _BookingPageOneState extends State<BookingPageOne> {
                           child: Container(
                             padding: const EdgeInsets.all(15),
                             decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 64, 64, 64),
+                              color: const Color.fromARGB(255, 0, 0, 0),
+                              border: Border.all(
+                                  color:
+                                      const Color.fromARGB(80, 255, 255, 255)),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Text(
@@ -284,7 +287,11 @@ class _BookingPageOneState extends State<BookingPageOne> {
                           child: Container(
                             padding: const EdgeInsets.all(15),
                             decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 64, 64, 64),
+                              color: const Color.fromARGB(255, 0, 0, 0)
+                                  .withOpacity(0.8),
+                              border: Border.all(
+                                  color:
+                                      const Color.fromARGB(80, 255, 255, 255)),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Text(
@@ -312,7 +319,7 @@ class _BookingPageOneState extends State<BookingPageOne> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 50, vertical: 15),
+                          horizontal: 60, vertical: 16),
                     ),
                     child: const Text(
                       'Submit',
