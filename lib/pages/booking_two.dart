@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:washio/pages/home.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -125,185 +126,216 @@ class _BookingPageTwoState extends State<BookingPageTwo> {
 
   @override
   Widget build(BuildContext context) {
+    final currentDate = DateFormat('d MMMM yyyy').format(DateTime.now());
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
         title: const Text(
-          'Book a Slot',
+          'Second floor booking',
           style: TextStyle(
-            color: Color.fromARGB(255, 255, 255, 255),
-            fontSize: 20,
-            fontFamily: 'JetBrains Mono',
-            fontWeight: FontWeight.bold,
-          ),
+              color: Colors.white,
+              fontFamily: 'Inter',
+              fontSize: 16,
+              fontWeight: FontWeight.bold),
         ),
-        backgroundColor: const Color.fromARGB(255, 64, 64, 64),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+              (route) => false,
+            );
           },
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Name',
-                  labelStyle: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'JetBrains Mono',
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.indigo),
-                  ),
-                ),
-                style: const TextStyle(color: Colors.white),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your name';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  setState(() {
-                    name = value;
-                  });
-                },
-              ),
-              const SizedBox(height: 16.0),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Room No.',
-                  labelStyle: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'JetBrains Mono',
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.indigo),
-                  ),
-                ),
-                keyboardType: TextInputType.number,
-                style: const TextStyle(color: Colors.white),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your room number';
-                  }
-                  if (int.tryParse(value) == null ||
-                      int.tryParse(value)!.toString().length > 2) {
-                    return 'Please enter a valid room number';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  setState(() {
-                    roomNo = value;
-                  });
-                },
-              ),
-              const SizedBox(height: 16.0),
-              Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.access_time, color: Colors.white),
-                    onPressed: () async {
-                      final selectedTime = await _selectTime(context);
-                      if (selectedTime != null) {
-                        setState(() {
-                          startTime = selectedTime;
-                        });
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Please select a valid time!'),
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                  Expanded(
-                    child: Text(
-                      startTime != null
-                          ? 'Start Time: ${startTime!.format(context)}'
-                          : 'Select Start Time',
-                      style: const TextStyle(color: Colors.white),
-                      //Check if time is selected
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16.0),
-              Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.access_time, color: Colors.white),
-                    onPressed: () async {
-                      final selectedTime = await _selectTime(context);
-                      if (selectedTime != null) {
-                        setState(() {
-                          stopTime = selectedTime;
-                        });
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Please select a valid time!'),
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                  Expanded(
-                    child: Text(
-                      stopTime != null
-                          ? 'Stop Time: ${stopTime!.format(context)}'
-                          : 'Select Stop Time',
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24.0),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    submitData();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const HomePage()),
-                    );
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 0, 255, 8),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  fixedSize: const Size(200, 50),
-                ),
-                child: const Text(
-                  'Submit',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'JetBrains Mono',
-                  ),
-                ),
-              ),
-            ],
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh, color: Colors.white),
+            onPressed: () {
+              setState(() {
+                name = '';
+                roomNo = '';
+                startTime = null;
+                stopTime = null;
+              });
+              _formKey.currentState?.reset();
+            },
           ),
-        ),
+        ],
       ),
-      backgroundColor: const Color.fromARGB(255, 29, 29, 29),
+      body: Stack(
+        children: [
+          Positioned(
+            bottom: 0,
+            left: 0,
+            child: Container(
+              height: 700,
+              width: 700,
+              decoration: const BoxDecoration(
+                gradient: RadialGradient(
+                  center: Alignment.bottomLeft,
+                  radius: 1.0,
+                  colors: [
+                    Color.fromARGB(255, 0, 86, 6), // Decreased intensity
+                    Color.fromARGB(255, 0, 0, 0),
+                  ],
+                  stops: [0.0, 1.0],
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Date Display
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 20),
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: const Color.fromARGB(255, 0, 255, 8)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      currentDate,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'JetBrains Mono',
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                  // Name Field
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Name',
+                      labelStyle: TextStyle(color: Colors.white),
+                      filled: true,
+                      fillColor: Color.fromRGBO(0, 0, 0, 0.8),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(color: Colors.white)),
+                    ),
+                    style: const TextStyle(color: Colors.white),
+                    onChanged: (value) => setState(() => name = value),
+                  ),
+                  const SizedBox(height: 16.0),
+                  // Room Field
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Room',
+                      labelStyle: TextStyle(color: Colors.white),
+                      filled: true,
+                      fillColor: Color.fromRGBO(0, 0, 0, 0.8),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(color: Colors.white)),
+                    ),
+                    style: const TextStyle(color: Colors.white),
+                    onChanged: (value) => setState(() => roomNo = value),
+                  ),
+                  const SizedBox(height: 16.0),
+                  // Time Fields
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () async {
+                            final selectedTime = await _selectTime(context);
+                            if (selectedTime != null) {
+                              setState(() {
+                                startTime = selectedTime;
+                              });
+                            }
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 0, 0, 0),
+                              border: Border.all(
+                                  color:
+                                      const Color.fromARGB(80, 255, 255, 255)),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              startTime != null
+                                  ? 'From: ${startTime!.format(context)}'
+                                  : 'From',
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () async {
+                            final selectedTime = await _selectTime(context);
+                            if (selectedTime != null) {
+                              setState(() {
+                                stopTime = selectedTime;
+                              });
+                            }
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 0, 0, 0)
+                                  .withOpacity(0.8),
+                              border: Border.all(
+                                  color:
+                                      const Color.fromARGB(80, 255, 255, 255)),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              stopTime != null
+                                  ? 'To: ${stopTime!.format(context)}'
+                                  : 'To',
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  // Submit Button
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        submitData();
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 60, vertical: 16),
+                    ),
+                    child: const Text(
+                      'Submit',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'JetBrains Mono',
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

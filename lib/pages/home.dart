@@ -144,10 +144,7 @@ class _HomePageState extends State<HomePage>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       FloorButton(floorNumber: 0, routeWidget: FloorZeroPage()),
-                      SizedBox(
-                        width: 10,
-                        height: 10,
-                      ),
+                      SizedBox(width: 10),
                       FloorButton(floorNumber: 1, routeWidget: FloorOnePage()),
                       SizedBox(width: 10),
                       FloorButton(floorNumber: 2, routeWidget: FloorTwoPage()),
