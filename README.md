@@ -2,7 +2,7 @@
 
 Wash.io is a streamlined solution for efficient laundry management in your hostel. With Wash.io, you can easily reserve a time slot for the washing machine on your floor, ensuring you never have to wait in line. The app provides timely notifications, reminding you of your upcoming bookings and keeping you informed about the machine’s real-time availability. Simplify your laundry routine and enjoy a more organized experience with Wash.io.
 
-<img src="https://cdn.discordapp.com/attachments/883222664066502716/1279666940914434101/showcase-img.png?ex=66d54635&is=66d3f4b5&hm=688f7787d7f5562a952464cbb9372d242bd425e53b5d02e11d5242dcb9d7c2e2&" alt="showcase" height="300"/>
+<img src="https://cdn.discordapp.com/attachments/883222664066502716/1279666940914434101/showcase-img.png?ex=66ee52b5&is=66ed0135&hm=163049a590a8e665e9c719852fe2f996e062bb6acbf8fac393d5ce66d947acad&" alt="showcase" height="300"/>
 
 ## Features ✨
 
