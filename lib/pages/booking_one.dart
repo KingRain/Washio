@@ -244,10 +244,12 @@ class _BookingPageOneState extends State<BookingPageOne> {
                     fillColor: Color.fromRGBO(0, 0, 0, 0.8),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(color: Colors.white)),
+                        borderSide: BorderSide(
+                            color: Color.fromARGB(100, 255, 255, 255))),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(color: Colors.white)),
+                        borderSide: BorderSide(
+                            color: Color.fromARGB(100, 255, 255, 255))),
                     focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide:
@@ -268,10 +270,12 @@ class _BookingPageOneState extends State<BookingPageOne> {
                     fillColor: Color.fromRGBO(0, 0, 0, 0.8),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(color: Colors.white)),
+                        borderSide: BorderSide(
+                            color: Color.fromARGB(100, 255, 255, 255))),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(color: Colors.white)),
+                        borderSide: BorderSide(
+                            color: Color.fromARGB(100, 255, 255, 255))),
                     focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide:
@@ -302,7 +306,7 @@ class _BookingPageOneState extends State<BookingPageOne> {
                             color: const Color.fromARGB(255, 0, 0, 0),
                             border: Border.all(
                                 color:
-                                    const Color.fromARGB(255, 255, 255, 255)),
+                                    const Color.fromARGB(100, 255, 255, 255)),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Text(
@@ -333,7 +337,7 @@ class _BookingPageOneState extends State<BookingPageOne> {
                                 .withOpacity(0.8),
                             border: Border.all(
                                 color:
-                                    const Color.fromARGB(255, 255, 255, 255)),
+                                    const Color.fromARGB(100, 255, 255, 255)),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Text(
@@ -367,8 +371,9 @@ class _BookingPageOneState extends State<BookingPageOne> {
                     backgroundColor: Colors.black,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
-                      side:
-                          const BorderSide(color: Colors.white), // White border
+                      side: const BorderSide(
+                          color: Color.fromARGB(
+                              100, 255, 255, 255)), // White border
                     ),
                     padding: const EdgeInsets.symmetric(
                         horizontal: 60, vertical: 16),
