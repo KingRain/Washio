@@ -279,31 +279,6 @@ class _HomePageState extends State<HomePage>
                           ),
                         ],
                       ),
-                      TextSpan(
-                        text: 'Support: ',
-                        children: [
-                          TextSpan(
-                            text: 'buymeacoffee.com/samjoe.png\n\n',
-                            style: const TextStyle(
-                              color: Colors.green,
-                              decoration: TextDecoration.underline,
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () async {
-                                const url =
-                                    'https://buymeacoffee.com/samjoe.png';
-                                if (await canLaunchUrl(Uri.parse(url))) {
-                                  await launchUrl(
-                                    Uri.parse(url),
-                                    mode: LaunchMode.externalApplication,
-                                  );
-                                } else {
-                                  throw 'Could not launch $url';
-                                }
-                              },
-                          ),
-                        ],
-                      ),
                       const TextSpan(text: 'UI/UX by Basil\n'),
                       TextSpan(
                         text: 'Instagram: ',
