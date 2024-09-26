@@ -296,7 +296,10 @@ class _BookingPageZeroState extends State<BookingPageZero> {
                           final selectedTime = await _selectTime(context);
                           if (selectedTime != null) {
                             setState(() {
-                              startTime = selectedTime;
+                              startTime = TimeOfDay(
+                                hour: selectedTime.hour,
+                                minute: (selectedTime.minute ~/ 5) * 5,
+                              );
                             });
                           }
                         },
@@ -312,7 +315,7 @@ class _BookingPageZeroState extends State<BookingPageZero> {
                           child: Text(
                             startTime != null
                                 ? 'From: ${startTime!.format(context)}'
-                                : 'From',
+                                : 'From:',
                             style: const TextStyle(
                                 color: Colors.white, fontFamily: 'Inter'),
                           ),
@@ -326,7 +329,10 @@ class _BookingPageZeroState extends State<BookingPageZero> {
                           final selectedTime = await _selectTime(context);
                           if (selectedTime != null) {
                             setState(() {
-                              stopTime = selectedTime;
+                              stopTime = TimeOfDay(
+                                hour: selectedTime.hour,
+                                minute: (selectedTime.minute ~/ 5) * 5,
+                              );
                             });
                           }
                         },
@@ -343,7 +349,7 @@ class _BookingPageZeroState extends State<BookingPageZero> {
                           child: Text(
                             stopTime != null
                                 ? 'To: ${stopTime!.format(context)}'
-                                : 'To',
+                                : 'To:',
                             style: const TextStyle(
                                 color: Colors.white, fontFamily: 'Inter'),
                           ),
@@ -357,14 +363,14 @@ class _BookingPageZeroState extends State<BookingPageZero> {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      submitData().then((_) {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomePage()),
-                          (route) => false,
-                        );
-                      });
+                      submitData();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage(
+                                  isBookingSuccessful: true,
+                                )),
+                      );
                     }
                   },
                   style: ElevatedButton.styleFrom(

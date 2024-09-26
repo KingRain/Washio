@@ -7,7 +7,9 @@ import '../pages/secondFloor.dart';
 import '../pages/firstFloor.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final bool isBookingSuccessful;
+  const HomePage({Key? key, this.isBookingSuccessful = false})
+      : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -32,6 +34,21 @@ class _HomePageState extends State<HomePage>
       parent: _controller,
       curve: Curves.easeInOut,
     ));
+    if (widget.isBookingSuccessful) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showBookingSuccessNotification();
+      });
+    }
+  }
+
+  void _showBookingSuccessNotification() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Booking Successful!'),
+        duration: Duration(seconds: 3),
+        backgroundColor: Colors.green,
+      ),
+    );
   }
 
   @override

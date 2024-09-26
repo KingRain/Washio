@@ -357,14 +357,12 @@ class _BookingPageOneState extends State<BookingPageOne> {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      submitData().then((_) {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomePage()),
-                          (route) => false,
-                        );
-                      });
+                      submitData();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()),
+                      );
                     }
                   },
                   style: ElevatedButton.styleFrom(

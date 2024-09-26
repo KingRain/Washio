@@ -360,14 +360,14 @@ class _BookingPageZeroNextState extends State<BookingPageZeroNext> {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      submitData().then((_) {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomePage()),
-                          (route) => false,
-                        );
-                      });
+                      submitData();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage(
+                                  isBookingSuccessful: true,
+                                )),
+                      );
                     }
                   },
                   style: ElevatedButton.styleFrom(
