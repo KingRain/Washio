@@ -8,8 +8,7 @@ import '../pages/firstFloor.dart';
 
 class HomePage extends StatefulWidget {
   final bool isBookingSuccessful;
-  const HomePage({Key? key, this.isBookingSuccessful = false})
-      : super(key: key);
+  const HomePage({super.key, this.isBookingSuccessful = false});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -32,23 +31,95 @@ class _HomePageState extends State<HomePage>
       end: const Offset(0, -0.05),
     ).animate(CurvedAnimation(
       parent: _controller,
-      curve: Curves.easeInOut,
+      curve: Curves.bounceInOut,
     ));
     if (widget.isBookingSuccessful) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _showBookingSuccessNotification();
+        _showBookingSuccessDialog();
       });
     }
   }
 
-  void _showBookingSuccessNotification() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Booking Successful!'),
-        duration: Duration(seconds: 3),
-        backgroundColor: Colors.green,
+  void _showBookingSuccessDialog() {
+    final overlay = Overlay.of(context);
+    final overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: 50.0,
+        left: MediaQuery.of(context).size.width * 0.1,
+        width: MediaQuery.of(context).size.width * 0.8,
+        child: Material(
+          color: Colors.transparent,
+          child: Row(
+            children: [
+              Expanded(
+                child: SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(0, -1),
+                    end: Offset.zero,
+                  ).animate(CurvedAnimation(
+                    parent: _controller,
+                    curve: Curves.bounceInOut,
+                  )),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 16.0, horizontal: 24.0),
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.white, width: 1),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.check_circle,
+                          color: Color.fromARGB(255, 55, 255, 0),
+                          size: 28,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: RichText(
+                            textAlign: TextAlign.center,
+                            text: const TextSpan(
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Inter',
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: 'Booking Successful',
+                                  style: TextStyle(
+                                      color: Color.fromARGB(255, 255, 255, 255),
+                                      fontFamily: 'Inter',
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                TextSpan(
+                                    text: '.',
+                                    style: TextStyle(
+                                        color: Color.fromARGB(255, 55, 255, 0),
+                                        fontFamily: 'Inter',
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
+
+    overlay.insert(overlayEntry);
+
+    Future.delayed(const Duration(seconds: 2), () {
+      overlayEntry.remove();
+    });
   }
 
   @override
@@ -222,6 +293,17 @@ class _HomePageState extends State<HomePage>
                     style: const TextStyle(
                         color: Color.fromARGB(255, 255, 255, 255)),
                     children: [
+                      const WidgetSpan(
+                        alignment: PlaceholderAlignment.middle,
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 4.0),
+                          child: Icon(
+                            Icons.circle,
+                            size: 8,
+                            color: Colors.green,
+                          ),
+                        ),
+                      ),
                       const TextSpan(text: 'Developed by Sam Joe in Flutter\n'),
                       TextSpan(
                         text: 'Instagram: ',
@@ -296,7 +378,19 @@ class _HomePageState extends State<HomePage>
                           ),
                         ],
                       ),
-                      const TextSpan(text: 'UI/UX by Basil\n'),
+                      const TextSpan(text: '\n'),
+                      const WidgetSpan(
+                        alignment: PlaceholderAlignment.middle,
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 4.0),
+                          child: Icon(
+                            Icons.circle,
+                            size: 8,
+                            color: Colors.green,
+                          ),
+                        ),
+                      ),
+                      const TextSpan(text: ' UI/UX by Mohammed Basil\n'),
                       TextSpan(
                         text: 'Instagram: ',
                         children: [
@@ -345,7 +439,18 @@ class _HomePageState extends State<HomePage>
                           ),
                         ],
                       ),
-                      const TextSpan(text: 'Web Dev: Lestlin Robins\n'),
+                      const WidgetSpan(
+                        alignment: PlaceholderAlignment.middle,
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 4.0),
+                          child: Icon(
+                            Icons.circle,
+                            size: 8,
+                            color: Colors.green,
+                          ),
+                        ),
+                      ),
+                      const TextSpan(text: 'Website by Lestlin Robins\n'),
                       TextSpan(
                         text: 'Instagram: ',
                         children: [

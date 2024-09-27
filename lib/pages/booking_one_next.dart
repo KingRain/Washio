@@ -57,16 +57,9 @@ class _BookingPageOneNextState extends State<BookingPageOneNext> {
     // Check if the slot already exists
     final existingSlots =
         await Supabase.instance.client.from('floor1_nextday').select('Slot');
-    /*
-    if (existingSlots.isNotEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('This slot is already taken!')),
-      );
-      return;
-    }
-    */
 
-    final now = TimeOfDay.now();
+    final now =
+        TimeOfDay.fromDateTime(DateTime.now().add(const Duration(days: 1)));
     final int nowInMinutes = now.hour * 60 + now.minute;
 
     // Check if the total time selected is less than or equal to 1 hour
@@ -83,17 +76,6 @@ class _BookingPageOneNextState extends State<BookingPageOneNext> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content: Text('Finish time should be after start time!')),
-      );
-      return;
-    }
-
-    // Check if the start and stop times are before the current time
-    if (selectedStartTimeInMinutes < nowInMinutes ||
-        selectedStopTimeInMinutes < nowInMinutes) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text(
-                'Start and stop times should not be before the current time!')),
       );
       return;
     }
@@ -364,7 +346,9 @@ class _BookingPageOneNextState extends State<BookingPageOneNext> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const HomePage()),
+                            builder: (context) => const HomePage(
+                                  isBookingSuccessful: true,
+                                )),
                       );
                     }
                   },

@@ -39,6 +39,7 @@ flutter:
   assets:
     - assets/images/main-icon.png
     - assets/icons/info-icon.svg
+    - assets/icons/check.png
 
   fonts:
     - family: JetBrains Mono

@@ -364,7 +364,9 @@ class _BookingPageTwoNextState extends State<BookingPageTwoNext> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const HomePage()),
+                            builder: (context) => const HomePage(
+                                  isBookingSuccessful: true,
+                                )),
                       );
                     }
                   },
