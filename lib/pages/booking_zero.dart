@@ -331,7 +331,7 @@ class _BookingPageZeroState extends State<BookingPageZero> {
                           child: Text(
                             startTime != null
                                 ? 'From: ${startTime!.format(context)}'
-                                : 'From:',
+                                : 'From',
                             style: const TextStyle(
                                 color: Colors.white, fontFamily: 'Inter'),
                           ),
@@ -365,7 +365,7 @@ class _BookingPageZeroState extends State<BookingPageZero> {
                           child: Text(
                             stopTime != null
                                 ? 'To: ${stopTime!.format(context)}'
-                                : 'To:',
+                                : 'To',
                             style: const TextStyle(
                                 color: Colors.white, fontFamily: 'Inter'),
                           ),
