@@ -253,6 +253,40 @@ class _BookingPageOneNextState extends State<BookingPageOneNext> {
                   },
                 ),
                 const SizedBox(height: 16.0),
+                // Room Floor Field
+                TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Room',
+                    labelStyle:
+                        TextStyle(color: Colors.white, fontFamily: 'Inter'),
+                    filled: true,
+                    fillColor: Color.fromRGBO(0, 0, 0, 0.8),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        borderSide: BorderSide(
+                            color: Color.fromARGB(100, 255, 255, 255))),
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        borderSide: BorderSide(
+                            color: Color.fromARGB(100, 255, 255, 255))),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        borderSide:
+                            BorderSide(color: Color.fromARGB(255, 0, 255, 8))),
+                  ),
+                  style:
+                      const TextStyle(color: Colors.white, fontFamily: 'Inter'),
+                  onChanged: (value) => setState(() => roomNo = value),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your room number';
+                    } else if (!RegExp(r'^[1-9][0-9]?$').hasMatch(value)) {
+                      return 'Please enter a valid room number';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16.0),
                 // Time Fields
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

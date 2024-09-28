@@ -304,7 +304,8 @@ class _HomePageState extends State<HomePage>
                           ),
                         ),
                       ),
-                      const TextSpan(text: 'Developed by Sam Joe in Flutter\n'),
+                      const TextSpan(
+                          text: 'Developed by Sam Joe with Flutter\n'),
                       TextSpan(
                         text: 'Instagram: ',
                         children: [
