@@ -5,14 +5,14 @@ import 'package:intl/intl.dart';
 import 'package:washio/pages/home.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class BookingPageOne extends StatefulWidget {
-  const BookingPageOne({super.key});
+class BookingPageZeroNext extends StatefulWidget {
+  const BookingPageZeroNext({super.key});
 
   @override
-  _BookingPageOneState createState() => _BookingPageOneState();
+  _BookingPageZeroNextState createState() => _BookingPageZeroNextState();
 }
 
-class _BookingPageOneState extends State<BookingPageOne> {
+class _BookingPageZeroNextState extends State<BookingPageZeroNext> {
   final _formKey = GlobalKey<FormState>();
 
   String name = '';
@@ -56,7 +56,7 @@ class _BookingPageOneState extends State<BookingPageOne> {
 
     // Check if the slot already exists
     final existingSlots =
-        await Supabase.instance.client.from('floor1').select('Slot');
+        await Supabase.instance.client.from('floor0_nextday').select('Slot');
     /*
     if (existingSlots.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -66,10 +66,11 @@ class _BookingPageOneState extends State<BookingPageOne> {
     }
     */
 
-    final now = TimeOfDay.now();
+    final now =
+        TimeOfDay.fromDateTime(DateTime.now().add(const Duration(days: 1)));
     final int nowInMinutes = now.hour * 60 + now.minute;
 
-    // Check if the total time selected is less than or equal to 1 hour
+    // Check if the total time selected is less than or equal to 1.5 hour
     if (selectedStopTimeInMinutes - selectedStartTimeInMinutes > 90) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -83,17 +84,6 @@ class _BookingPageOneState extends State<BookingPageOne> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content: Text('Finish time should be after start time!')),
-      );
-      return;
-    }
-
-    // Check if the start and stop times are before the current time
-    if (selectedStartTimeInMinutes < nowInMinutes ||
-        selectedStopTimeInMinutes < nowInMinutes) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text(
-                'Start and stop times should not be before the current time!')),
       );
       return;
     }
@@ -127,11 +117,13 @@ class _BookingPageOneState extends State<BookingPageOne> {
     }
 
     final slot = '$formattedStartTime\n$formattedStopTime';
-    final response = await Supabase.instance.client.from('floor1').insert({
+    final response = await Supabase.instance.client
+        .from('floor0_nextday')
+        .insert({
       'Name': "$name ($roomNo)",
       'RoomNo': roomNo,
       'Slot': slot,
-      'CurrentDay': "True"
+      'CurrentDay': "False"
     });
 
     //Todo: fix error checking
@@ -157,7 +149,8 @@ class _BookingPageOneState extends State<BookingPageOne> {
 
   @override
   Widget build(BuildContext context) {
-    final currentDate = DateFormat('d MMMM yyyy').format(DateTime.now());
+    final currentDate = DateFormat('d MMMM yyyy')
+        .format(DateTime.now().add(const Duration(days: 1)));
 
     return Container(
       decoration: BoxDecoration(
@@ -177,7 +170,7 @@ class _BookingPageOneState extends State<BookingPageOne> {
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 0, 0, 0),
           title: const Text(
-            'First floor booking',
+            'Ground floor booking',
             style: TextStyle(
                 color: Colors.white,
                 fontFamily: 'Inter',

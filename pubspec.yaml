@@ -1,7 +1,7 @@
 name: washio
 description: "A Simple washing machine booking app."
 publish_to: 'none'
-version: 1.0.0+1
+version: 2.0.0+1
 
 environment:
   sdk: ^3.5.1
@@ -19,6 +19,7 @@ dependencies:
   # Icons and images packages
   cupertino_icons: ^1.0.8
   flutter_svg: ^2.0.10+1
+  url_launcher: ^6.3.0
   
 
 
@@ -38,6 +39,7 @@ flutter:
   assets:
     - assets/images/main-icon.png
     - assets/icons/info-icon.svg
+    - assets/icons/check.png
 
   fonts:
     - family: JetBrains Mono
