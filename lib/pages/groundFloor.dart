@@ -44,7 +44,7 @@ class _FloorZeroPageState extends State<FloorZeroPage> {
       String slot = row['Slot'].toString();
       String currentStatus = row['Status'].toString();
       await Supabase.instance.client
-          .from('floor1')
+          .from('floor0')
           .update({'CurrentDay': "True"}).eq('Name', row['Name']);
 
       try {
@@ -135,7 +135,7 @@ class _FloorZeroPageState extends State<FloorZeroPage> {
 
           // Update status in Supabase if it has changed
           if (newStatus != currentStatus) {
-            await Supabase.instance.client.from('floor1_nextday');
+            await Supabase.instance.client.from('floor0_nextday');
             //.update({'Status': newStatus}).eq('Name', row['Name']);
           }
         }

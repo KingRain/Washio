@@ -258,9 +258,17 @@ class _BookingPageZeroState extends State<BookingPageZero> {
                   style:
                       const TextStyle(color: Colors.white, fontFamily: 'Inter'),
                   onChanged: (value) => setState(() => name = value),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your name';
+                    } else if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+                      return 'Please enter only alphabets';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 16.0),
-                // Room Field
+                // Room Floor Field
                 TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Room',
@@ -284,6 +292,14 @@ class _BookingPageZeroState extends State<BookingPageZero> {
                   style:
                       const TextStyle(color: Colors.white, fontFamily: 'Inter'),
                   onChanged: (value) => setState(() => roomNo = value),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your room number';
+                    } else if (!RegExp(r'^[1-9][0-9]?$').hasMatch(value)) {
+                      return 'Please enter a valid room number';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 16.0),
                 // Time Fields

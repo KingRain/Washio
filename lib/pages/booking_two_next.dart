@@ -66,14 +66,14 @@ class _BookingPageTwoNextState extends State<BookingPageTwoNext> {
     }
     */
 
-    final now = TimeOfDay.now();
+    final now =
+        TimeOfDay.fromDateTime(DateTime.now().add(const Duration(days: 1)));
     final int nowInMinutes = now.hour * 60 + now.minute;
 
-    // Check if the total time selected is less than or equal to 1 hour
-    if (selectedStopTimeInMinutes - selectedStartTimeInMinutes > 60) {
+    if (selectedStopTimeInMinutes - selectedStartTimeInMinutes > 90) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('Total time selected should be 1 hour or less!')),
+            content: Text('Total time selected should be 90 mins or less!')),
       );
       return;
     }
@@ -83,17 +83,6 @@ class _BookingPageTwoNextState extends State<BookingPageTwoNext> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content: Text('Finish time should be after start time!')),
-      );
-      return;
-    }
-
-    // Check if the start and stop times are before the current time
-    if (selectedStartTimeInMinutes < nowInMinutes ||
-        selectedStopTimeInMinutes < nowInMinutes) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text(
-                'Start and stop times should not be before the current time!')),
       );
       return;
     }
@@ -261,32 +250,14 @@ class _BookingPageTwoNextState extends State<BookingPageTwoNext> {
                   style:
                       const TextStyle(color: Colors.white, fontFamily: 'Inter'),
                   onChanged: (value) => setState(() => name = value),
-                ),
-                const SizedBox(height: 16.0),
-                // Room Field
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Room',
-                    labelStyle:
-                        TextStyle(color: Colors.white, fontFamily: 'Inter'),
-                    filled: true,
-                    fillColor: Color.fromRGBO(0, 0, 0, 0.8),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                            color: Color.fromARGB(100, 255, 255, 255))),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                            color: Color.fromARGB(100, 255, 255, 255))),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide:
-                            BorderSide(color: Color.fromARGB(255, 0, 255, 8))),
-                  ),
-                  style:
-                      const TextStyle(color: Colors.white, fontFamily: 'Inter'),
-                  onChanged: (value) => setState(() => roomNo = value),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your name';
+                    } else if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+                      return 'Please enter only alphabets';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 16.0),
                 // Time Fields
