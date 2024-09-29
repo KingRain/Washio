@@ -244,7 +244,7 @@ class _HomePageState extends State<HomePage>
                   // Version Information
                   const Center(
                     child: Text(
-                      'Kalapurackal Edition\nVersion 2.0.0\n2024 Washio. All rights reserved.',
+                      'Kalapurackal Edition\nVersion 2.0.1\n2024 Washio. All rights reserved.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white70,
