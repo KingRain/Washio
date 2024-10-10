@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:washio/pages/home.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
+//Samannan sceneeeeee!!!!
 Future<void> main() async {
   // Ensure Flutter engine is initialized before making async calls
   WidgetsFlutterBinding.ensureInitialized();
